@@ -1300,6 +1300,21 @@
           <!-- Left: Input Form Panel -->
           <div class="planner-form-panel">
             
+            <!-- Database Manager -->
+            <div class="glass-card" style="border-left: 4px solid var(--primary);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 class="form-section-title" style="margin-bottom: 0; border: none; padding: 0;">🗄️ Project Database</h3>
+                <button type="button" class="btn btn-primary" id="db-save-current-btn" style="padding: 0.45rem 0.9rem; font-size: 0.8rem;">💾 Save Current Draft</button>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Save your progress directly into the browser database. Changes in the planner are also autosaved as a draft.
+              </p>
+              
+              <div id="db-records-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 150px; overflow-y: auto; padding-right: 0.25rem;">
+                <!-- DB records rendered here -->
+              </div>
+            </div>
+
             <!-- Section 1: Project Metadata -->
             <div class="glass-card">
               <h3 class="form-section-title">1. Project Overview</h3>
@@ -1871,6 +1886,7 @@
 
       syncAssessmentTable();
       renderVisualizer();
+      saveAutosaveDraft();
     }
 
     // Attach event listeners to top inputs
@@ -2185,6 +2201,140 @@
     });
 
     // ========================================================================
+    // LOCAL DATABASE MANAGER & AUTOSAVE
+    // ========================================================================
+    const dbRecordsList = document.getElementById('db-records-list');
+
+    function renderDatabaseRecords() {
+      dbRecordsList.innerHTML = '';
+      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+
+      if (db.length === 0) {
+        dbRecordsList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; text-align: center; padding: 0.5rem;">No projects in database yet.</p>`;
+        return;
+      }
+
+      db.forEach((record, index) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: var(--bg-app); padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.8rem; margin-bottom: 0.35rem;';
+        div.innerHTML = `
+          <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%; text-align: left;">
+            <strong>${record.title}</strong><br>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">${record.grade} • ${record.savedAt}</span>
+          </div>
+          <div style="display: flex; gap: 0.35rem;">
+            <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; border-radius: 4px;" onclick="loadDatabaseRecord(${index})">📂 Load</button>
+            <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; border-radius: 4px; color: #ef4444; border-color: #fca5a5;" onclick="deleteDatabaseRecord(${index})">🗑️</button>
+          </div>
+        `;
+        dbRecordsList.appendChild(div);
+      });
+    }
+
+    window.loadDatabaseRecord = function(index) {
+      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+      const record = db[index];
+      if (record) {
+        document.getElementById('project-title').value = record.title;
+        document.getElementById('grade-level').value = record.grade;
+        document.getElementById('project-duration').value = record.duration;
+        document.getElementById('project-theme').value = record.theme;
+        document.getElementById('sequence-adjustment').value = record.seq;
+
+        subjectsData = JSON.parse(JSON.stringify(record.subjects));
+        assessmentsData = JSON.parse(JSON.stringify(record.assessments));
+        
+        renderSubjectsForm();
+        renderFormAssessments();
+        updateLivePreview();
+        saveAutosaveDraft(); // Sync draft
+        alert(`Loaded "${record.title}" from database!`);
+      }
+    };
+
+    window.deleteDatabaseRecord = function(index) {
+      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+      const title = db[index] ? db[index].title : '';
+      if (confirm(`Are you sure you want to delete "${title}" from the database?`)) {
+        db.splice(index, 1);
+        localStorage.setItem('co_align_database', JSON.stringify(db));
+        renderDatabaseRecords();
+      }
+    };
+
+    document.getElementById('db-save-current-btn').addEventListener('click', () => {
+      const title = document.getElementById('project-title').value.trim();
+      if (!title) {
+        alert("Please enter a Collaboration Project Title first!");
+        return;
+      }
+
+      const record = {
+        title: title,
+        grade: document.getElementById('grade-level').value,
+        duration: parseInt(document.getElementById('project-duration').value) || 4,
+        theme: document.getElementById('project-theme').value,
+        seq: document.getElementById('sequence-adjustment').value,
+        subjects: JSON.parse(JSON.stringify(subjectsData)),
+        assessments: JSON.parse(JSON.stringify(assessmentsData)),
+        savedAt: new Date().toLocaleString()
+      };
+
+      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+      const existIdx = db.findIndex(r => r.title.toLowerCase() === title.toLowerCase());
+
+      if (existIdx !== -1) {
+        if (!confirm(`A database record with the title "${title}" already exists. Do you want to overwrite it?`)) {
+          return;
+        }
+        db[existIdx] = record;
+      } else {
+        db.push(record);
+      }
+
+      localStorage.setItem('co_align_database', JSON.stringify(db));
+      renderDatabaseRecords();
+      alert(`Project "${title}" successfully saved to database!`);
+    });
+
+    // Autosave Draft functions
+    function saveAutosaveDraft() {
+      const draft = {
+        title: document.getElementById('project-title').value,
+        grade: document.getElementById('grade-level').value,
+        duration: parseInt(document.getElementById('project-duration').value) || 4,
+        theme: document.getElementById('project-theme').value,
+        seq: document.getElementById('sequence-adjustment').value,
+        subjects: subjectsData,
+        assessments: assessmentsData
+      };
+      localStorage.setItem('active_project_draft', JSON.stringify(draft));
+    }
+
+    function loadAutosaveDraft() {
+      const draftStr = localStorage.getItem('active_project_draft');
+      if (draftStr) {
+        try {
+          const draft = JSON.parse(draftStr);
+          document.getElementById('project-title').value = draft.title || '';
+          document.getElementById('grade-level').value = draft.grade || '';
+          document.getElementById('project-duration').value = draft.duration || 4;
+          document.getElementById('project-theme').value = draft.theme || '';
+          document.getElementById('sequence-adjustment').value = draft.seq || '';
+
+          if (draft.subjects && draft.subjects.length > 0) {
+            subjectsData = draft.subjects;
+          }
+          if (draft.assessments && draft.assessments.length > 0) {
+            assessmentsData = draft.assessments;
+          }
+        } catch (e) {
+          console.error("Failed to load autosaved draft", e);
+        }
+      }
+    }
+
+    // ========================================================================
     // EXPORT & PRINT HANDLERS
     // ========================================================================
     document.getElementById('print-btn').addEventListener('click', () => {
@@ -2265,10 +2415,12 @@
     // APP INITIALIZATION
     // ========================================================================
     window.addEventListener('DOMContentLoaded', () => {
+      loadAutosaveDraft();
       renderSubjectsForm();
       renderFormAssessments();
       updateLivePreview();
       renderTemplatesTab();
+      renderDatabaseRecords();
     });
   </script>
 </body>
