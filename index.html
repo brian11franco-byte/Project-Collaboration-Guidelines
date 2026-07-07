@@ -986,30 +986,47 @@
       text-transform: uppercase;
     }
 
-    /* Print Styles overrides */
+     /* Print Styles overrides */
     @media print {
       body {
-        background-color: #ffffff;
+        background: #ffffff !important;
+        color: #000000 !important;
       }
-      header, main > *:not(#planner-tab), .planner-form-panel, .preview-actions-bar, .a4-preview-wrapper {
+      header, 
+      .planner-form-panel, 
+      .preview-actions-bar,
+      .tab-nav,
+      .theme-toggle-btn {
         display: none !important;
       }
       main {
-        padding: 0;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
       }
       .planner-container {
-        display: block;
+        display: block !important;
       }
       .planner-preview-panel {
-        position: relative;
-        top: 0;
+        width: 100% !important;
+        position: relative !important;
+        top: 0 !important;
+      }
+      .a4-preview-wrapper {
+        background: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        display: block !important;
+        overflow: visible !important;
       }
       .a4-document {
-        box-shadow: none;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        min-height: auto;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        min-height: auto !important;
+        border: none !important;
       }
     }
 
