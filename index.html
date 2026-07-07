@@ -2201,16 +2201,85 @@
     });
 
     // ========================================================================
-    // LOCAL DATABASE MANAGER & AUTOSAVE
+    // LOCAL DATABASE & VERCEL KV CLOUD DATABASE INTEGRATION
     // ========================================================================
     const dbRecordsList = document.getElementById('db-records-list');
+    let isCloudConnected = false;
 
-    function renderDatabaseRecords() {
-      dbRecordsList.innerHTML = '';
+    async function fetchProjects() {
+      try {
+        const response = await fetch('/api/projects');
+        if (response.ok) {
+          const cloudProjects = await response.json();
+          isCloudConnected = true;
+          return cloudProjects;
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          console.warn("Cloud DB fallback: using localStorage.", errData.error || response.statusText);
+        }
+      } catch (err) {
+        console.warn("Cloud DB fetch error: falling back to localStorage.", err);
+      }
+      isCloudConnected = false;
+      return JSON.parse(localStorage.getItem('co_align_database')) || [];
+    }
+
+    async function saveProject(newProject) {
+      if (isCloudConnected) {
+        try {
+          const response = await fetch('/api/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newProject)
+          });
+          if (response.ok) {
+            return true;
+          }
+        } catch (err) {
+          console.error("Cloud DB save error", err);
+        }
+      }
+      
+      // Fallback: save to local storage database
       let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+      const existIdx = db.findIndex(r => r.title.toLowerCase() === newProject.title.toLowerCase());
+      if (existIdx !== -1) {
+        db[existIdx] = newProject;
+      } else {
+        db.push(newProject);
+      }
+      localStorage.setItem('co_align_database', JSON.stringify(db));
+      return true;
+    }
+
+    async function deleteProject(title) {
+      if (isCloudConnected) {
+        try {
+          const response = await fetch(`/api/projects?title=${encodeURIComponent(title)}`, {
+            method: 'DELETE'
+          });
+          if (response.ok) {
+            return true;
+          }
+        } catch (err) {
+          console.error("Cloud DB delete error", err);
+        }
+      }
+
+      // Fallback: delete from local storage database
+      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+      db = db.filter(r => r.title.toLowerCase() !== title.toLowerCase());
+      localStorage.setItem('co_align_database', JSON.stringify(db));
+      return true;
+    }
+
+    async function renderDatabaseRecords() {
+      dbRecordsList.innerHTML = '';
+      let db = await fetchProjects();
 
       if (db.length === 0) {
         dbRecordsList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; text-align: center; padding: 0.5rem;">No projects in database yet.</p>`;
+        updateDbStatusIndicator();
         return;
       }
 
@@ -2229,10 +2298,33 @@
         `;
         dbRecordsList.appendChild(div);
       });
+
+      updateDbStatusIndicator();
     }
 
-    window.loadDatabaseRecord = function(index) {
-      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+    function updateDbStatusIndicator() {
+      let statusBadge = document.getElementById('db-status-badge');
+      if (!statusBadge) {
+        statusBadge = document.createElement('span');
+        statusBadge.id = 'db-status-badge';
+        statusBadge.style.cssText = 'font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 50px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle; text-transform: uppercase;';
+        const cardHeader = document.querySelector('#db-save-current-btn').parentElement;
+        cardHeader.appendChild(statusBadge);
+      }
+
+      if (isCloudConnected) {
+        statusBadge.textContent = 'Vercel KV Connected';
+        statusBadge.style.background = '#d1fae5';
+        statusBadge.style.color = '#065f46';
+      } else {
+        statusBadge.textContent = 'Local Browser DB';
+        statusBadge.style.background = '#fef3c7';
+        statusBadge.style.color = '#92400e';
+      }
+    }
+
+    window.loadDatabaseRecord = async function(index) {
+      let db = await fetchProjects();
       const record = db[index];
       if (record) {
         document.getElementById('project-title').value = record.title;
@@ -2252,17 +2344,18 @@
       }
     };
 
-    window.deleteDatabaseRecord = function(index) {
-      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
-      const title = db[index] ? db[index].title : '';
-      if (confirm(`Are you sure you want to delete "${title}" from the database?`)) {
-        db.splice(index, 1);
-        localStorage.setItem('co_align_database', JSON.stringify(db));
+    window.deleteDatabaseRecord = async function(index) {
+      let db = await fetchProjects();
+      const project = db[index];
+      if (!project) return;
+
+      if (confirm(`Are you sure you want to delete "${project.title}" from the database?`)) {
+        await deleteProject(project.title);
         renderDatabaseRecords();
       }
     };
 
-    document.getElementById('db-save-current-btn').addEventListener('click', () => {
+    document.getElementById('db-save-current-btn').addEventListener('click', async () => {
       const title = document.getElementById('project-title').value.trim();
       if (!title) {
         alert("Please enter a Collaboration Project Title first!");
@@ -2280,19 +2373,16 @@
         savedAt: new Date().toLocaleString()
       };
 
-      let db = JSON.parse(localStorage.getItem('co_align_database')) || [];
+      let db = await fetchProjects();
       const existIdx = db.findIndex(r => r.title.toLowerCase() === title.toLowerCase());
 
       if (existIdx !== -1) {
         if (!confirm(`A database record with the title "${title}" already exists. Do you want to overwrite it?`)) {
           return;
         }
-        db[existIdx] = record;
-      } else {
-        db.push(record);
       }
 
-      localStorage.setItem('co_align_database', JSON.stringify(db));
+      await saveProject(record);
       renderDatabaseRecords();
       alert(`Project "${title}" successfully saved to database!`);
     });
