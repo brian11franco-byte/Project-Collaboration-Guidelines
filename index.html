@@ -606,7 +606,7 @@
     }
 
     /* ==========================================================================
-       TAB 2: COLLABORATION PLANNER (Split Form & Preview Layout)
+       TAB 2: COLLABORATION PLANNER (Dynamic subjects columns)
        ========================================================================== */
     .planner-container {
       display: grid;
@@ -669,6 +669,34 @@
       gap: 1.25rem;
     }
 
+    /* Dynamic subjects layout */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .subject-form-card {
+      border: 1px solid var(--border-color);
+      background: var(--bg-app);
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+
+    .remove-subject-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #ef4444;
+      cursor: pointer;
+      line-height: 1;
+      font-weight: 700;
+    }
+
     /* Assessment Items Editor */
     .assessment-item-card {
       background: var(--bg-app);
@@ -721,7 +749,7 @@
       min-height: 297mm;
       background: #ffffff;
       color: #000000;
-      padding: 20mm;
+      padding: 18mm;
       font-family: 'Calibri', 'Arial', sans-serif;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       box-sizing: border-box;
@@ -775,14 +803,14 @@
 
     .a4-objectives-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1.5rem;
       margin-bottom: 1rem;
     }
 
     .a4-obj-box {
       font-size: 9.5pt;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     .a4-obj-box strong {
@@ -853,6 +881,11 @@
       line-height: 1.5;
     }
 
+    .template-card .btn {
+      width: 100%;
+      margin-top: auto;
+    }
+
     .template-details {
       font-size: 0.85rem;
       background: var(--bg-app);
@@ -889,25 +922,16 @@
     }
 
     .viz-week-row {
-      display: grid;
-      grid-template-columns: 120px 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
       position: relative;
     }
 
-    .viz-week-row::after {
-      content: '';
-      position: absolute;
-      left: 120px;
-      right: 0;
-      bottom: -1rem;
-      height: 1px;
-      background: var(--border-color);
-    }
-
-    .viz-week-row:last-child::after {
-      display: none;
+    .viz-week-row:last-child {
+      border-bottom: none;
     }
 
     .viz-label {
@@ -915,6 +939,13 @@
       font-weight: 800;
       font-size: 1.25rem;
       color: var(--primary);
+    }
+
+    .viz-tracks-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
     }
 
     .viz-track {
@@ -925,13 +956,11 @@
       position: relative;
     }
 
-    .viz-track.t1 {
-      border-left: 4px solid var(--primary);
-    }
-
-    .viz-track.t2 {
-      border-left: 4px solid var(--secondary);
-    }
+    .viz-track.t1 { border-left: 4px solid var(--primary); }
+    .viz-track.t2 { border-left: 4px solid var(--secondary); }
+    .viz-track.t3 { border-left: 4px solid var(--accent); }
+    .viz-track.t4 { border-left: 4px solid #8b5cf6; }
+    .viz-track.t5 { border-left: 4px solid #ec4899; }
 
     .viz-track h4 {
       font-size: 0.95rem;
@@ -1273,56 +1302,19 @@
               </div>
             </div>
 
-            <!-- Section 2: Subject Alignments -->
+            <!-- Section 2: Dynamic Subject Areas involved -->
             <div class="glass-card">
-              <h3 class="form-section-title">2. Subject Customizations</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 class="form-section-title" style="margin-bottom: 0; border: none; padding: 0;">2. Subject Customizations</h3>
+                <button type="button" class="btn btn-outline" id="add-subject-btn" style="padding: 0.45rem 0.9rem; font-size: 0.8rem;">➕ Add Subject Area</button>
+              </div>
               
-              <div class="form-row-2" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
-                <!-- Subject 1 -->
-                <div>
-                  <h4 style="font-size: 0.95rem; color: var(--secondary); margin-bottom: 1rem;">Subject A (Anchor)</h4>
-                  <div class="form-group">
-                    <label for="sub1-name">Subject Name</label>
-                    <input type="text" id="sub1-name" value="Science">
-                  </div>
-                  <div class="form-group">
-                    <label for="sub1-teacher">Teacher Name(s)</label>
-                    <input type="text" id="sub1-teacher" value="Primary X Science Teacher">
-                  </div>
-                  <div class="form-group">
-                    <label for="sub1-obj">Learning Objective</label>
-                    <textarea id="sub1-obj" rows="4">(1) Name at least 8 major external body parts with 100% accuracy. (2) Identify the correct location of body parts by assembling a paper puppet. (3) Describe the primary functions (e.g. We use our eyes to see, legs to walk). (4) Explain how body parts make daily life easier.</textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="sub1-prereq">Prerequisite Knowledge/Skills</label>
-                    <input type="text" id="sub1-prereq" value="Basic visual identification of body parts.">
-                  </div>
-                </div>
-
-                <!-- Subject 2 -->
-                <div>
-                  <h4 style="font-size: 0.95rem; color: var(--primary); margin-bottom: 1rem;">Subject B (Collaborator)</h4>
-                  <div class="form-group">
-                    <label for="sub2-name">Subject Name</label>
-                    <input type="text" id="sub2-name" value="Language (English & BI)">
-                  </div>
-                  <div class="form-group">
-                    <label for="sub2-teacher">Teacher Name(s)</label>
-                    <input type="text" id="sub2-teacher" value="Primary X Language Teacher">
-                  </div>
-                  <div class="form-group">
-                    <label for="sub2-obj">Learning Objective</label>
-                    <textarea id="sub2-obj" rows="4">Bahasa: Siswa dapat menyebutkan identitas diri (nama, umur, tanggal lahir, alamat, hobi) secara benar dan lengkap. English: Introduce themselves confidently in front of the class.</textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="sub2-prereq">Prerequisite Knowledge/Skills</label>
-                    <input type="text" id="sub2-prereq" value="Basic spelling and sentence writing in English and Bahasa Indonesia.">
-                  </div>
-                </div>
+              <div id="subjects-form-container" class="subjects-grid">
+                <!-- Populated dynamically via JS -->
               </div>
 
               <!-- Sequence Adjustment -->
-              <div class="form-group">
+              <div class="form-group" style="margin-top: 1.5rem;">
                 <label for="sequence-adjustment">Sequence / Schedule Adjustment Description</label>
                 <textarea id="sequence-adjustment" rows="3">Language teachers (English & Bahasa) coordinate self-introduction speech templates during Weeks 1 and 2, which run parallel to the Science body parts naming lectures. In Week 3, students apply these by presenting their puppets in front of the class.</textarea>
               </div>
@@ -1347,6 +1339,9 @@
             <div class="preview-actions-bar">
               <button class="btn btn-outline" id="copy-markdown-btn">
                 <span>📋</span> Copy Markdown
+              </button>
+              <button class="btn btn-outline" id="download-json-btn">
+                <span>💾</span> Export Backup
               </button>
               <button class="btn btn-primary" id="print-btn">
                 <span>🖨️</span> Print Alignment File
@@ -1380,33 +1375,17 @@
                 </table>
 
                 <div class="a4-section-title">Cross-Curricular Learning Objectives & Prerequisites</div>
-                <div class="a4-objectives-grid">
-                  <div class="a4-obj-box" style="border-right: 1px solid #ddd; padding-right: 1rem;">
-                    <strong>Subject A: <span id="preview-sub1-header">Science</span></strong>
-                    <p style="margin-bottom: 0.5rem;"><em>Teacher:</em> <span id="preview-sub1-teacher">Primary X Science Teacher</span></p>
-                    <p><em>Objective:</em> <span id="preview-sub1-obj">Name at least 8 major external body parts...</span></p>
-                    <p style="margin-top: 0.5rem; font-size: 8.5pt;"><strong>Prerequisites:</strong> <span id="preview-sub1-prereq">Basic visual identification of body parts.</span></p>
-                  </div>
-                  <div class="a4-obj-box">
-                    <strong>Subject B: <span id="preview-sub2-header">Language (English & BI)</span></strong>
-                    <p style="margin-bottom: 0.5rem;"><em>Teacher:</em> <span id="preview-sub2-teacher">Primary X Language Teacher</span></p>
-                    <p><em>Objective:</em> <span id="preview-sub2-obj">Bahasa: Siswa dapat menyebutkan identitas diri...</span></p>
-                    <p style="margin-top: 0.5rem; font-size: 8.5pt;"><strong>Prerequisites:</strong> <span id="preview-sub2-prereq">Basic spelling and sentence writing...</span></p>
-                  </div>
+                <div class="a4-objectives-grid" id="preview-objectives-grid">
+                  <!-- Populated dynamically via JS -->
                 </div>
 
                 <div class="a4-section-title">Coordinated Weekly Assessment Timeline</div>
                 <table class="a4-timeline-table" id="preview-timeline-table">
-                  <thead>
-                    <tr>
-                      <th style="width: 15%;">When</th>
-                      <th style="width: 20%;">Phase / Type</th>
-                      <th>Subject A Assessments</th>
-                      <th>Subject B Assessments</th>
-                    </tr>
+                  <thead id="preview-timeline-thead">
+                    <!-- Populated dynamically via JS -->
                   </thead>
-                  <tbody>
-                    <!-- Populated dynamically -->
+                  <tbody id="preview-timeline-tbody">
+                    <!-- Populated dynamically via JS -->
                   </tbody>
                 </table>
 
@@ -1435,7 +1414,7 @@
           <!-- Template 1: Body Puppet Intro Project -->
           <div class="glass-card template-card science-math">
             <div class="template-meta">
-              <span class="badge badge-secondary">Science + English + BI</span>
+              <span class="badge badge-secondary">2 Subjects</span>
               <span class="badge badge-accent">Primary X (1st Sem)</span>
             </div>
             <h3>Body Puppet Intro Project</h3>
@@ -1458,7 +1437,7 @@
           <!-- Template 2: Miniature Stage Drama Project -->
           <div class="glass-card template-card science-math">
             <div class="template-meta">
-              <span class="badge badge-secondary">Science + English + BI + RS</span>
+              <span class="badge badge-secondary">3 Subjects</span>
               <span class="badge badge-accent">Primary X (1st Sem Final)</span>
             </div>
             <h3>Miniature Stage Drama</h3>
@@ -1481,7 +1460,7 @@
           <!-- Template 3: Water Games Day & Buoyancy -->
           <div class="glass-card template-card physics-cs" style="border-top-color: var(--accent);">
             <div class="template-meta">
-              <span class="badge badge-accent">Science + Math + PE + Music</span>
+              <span class="badge badge-accent">4 Subjects</span>
               <span class="badge badge-accent">Primary X (2nd Sem Final)</span>
             </div>
             <h3>Water Games Day & Buoyancy</h3>
@@ -1504,7 +1483,7 @@
           <!-- Template 4: My Book of Light -->
           <div class="glass-card template-card science-math">
             <div class="template-meta">
-              <span class="badge badge-secondary">Science + English + Math + Arts</span>
+              <span class="badge badge-secondary">4 Subjects</span>
               <span class="badge badge-accent">Primary 3 (1st Sem Final)</span>
             </div>
             <h3>My Book of Light</h3>
@@ -1527,7 +1506,7 @@
           <!-- Template 5: Shopping Center -->
           <div class="glass-card template-card physics-cs" style="border-top-color: var(--accent);">
             <div class="template-meta">
-              <span class="badge badge-accent">All Subjects (Math/Science/CL)</span>
+              <span class="badge badge-accent">5 Subjects</span>
               <span class="badge badge-accent">Primary 2 (2nd Sem Final)</span>
             </div>
             <h3>Shopping Center</h3>
@@ -1758,67 +1737,127 @@
     });
 
     // ========================================================================
-    // COLLABORATION PLANNER FORM LOGIC
+    // GLOBAL STATE MANAGEMENT (Dynamic Subjects & Assessments)
     // ========================================================================
-    const plannerFields = [
-      { id: 'project-title', previewId: 'preview-title' },
-      { id: 'grade-level', previewId: 'preview-grade-header', formatter: val => `Grade Level: ${val} | S.Y. 2025-2026` },
-      { id: 'project-duration', previewId: 'preview-duration', formatter: val => `${val} Weeks` },
-      { id: 'project-theme', previewId: 'preview-theme' },
-      { id: 'sub1-name', previewId: 'preview-sub1-header' },
-      { id: 'sub1-teacher', previewId: 'preview-sub1-teacher' },
-      { id: 'sub1-obj', previewId: 'preview-sub1-obj' },
-      { id: 'sub1-prereq', previewId: 'preview-sub1-prereq' },
-      { id: 'sub2-name', previewId: 'preview-sub2-header' },
-      { id: 'sub2-teacher', previewId: 'preview-sub2-teacher' },
-      { id: 'sub2-obj', previewId: 'preview-sub2-obj' },
-      { id: 'sub2-prereq', previewId: 'preview-sub2-prereq' },
-      { id: 'sequence-adjustment', previewId: 'preview-sequence' }
+    let subjectsData = [
+      { id: 1, name: "Science", teacher: "Primary X Science Teacher", obj: "(1) Name at least 8 major external body parts with 100% accuracy. (2) Identify the correct location of body parts by assembling a paper puppet. (3) Describe the primary functions (e.g. We use our eyes to see, legs to walk). (4) Explain how body parts make daily life easier.", prereq: "Basic visual identification of body parts." },
+      { id: 2, name: "Language (English & BI)", teacher: "Primary X Language Teacher", obj: "Bahasa: Siswa dapat menyebutkan identitas diri (nama, umur, tanggal lahir, alamat, hobi) secara benar dan lengkap. English: Introduce themselves confidently in front of the class.", prereq: "Basic spelling and sentence writing in English and Bahasa Indonesia." }
     ];
 
-    function updateLivePreview() {
-      plannerFields.forEach(field => {
-        const inputEl = document.getElementById(field.id);
-        const previewEl = document.getElementById(field.previewId);
-        if (inputEl && previewEl) {
-          previewEl.textContent = field.formatter ? field.formatter(inputEl.value) : inputEl.value;
-        }
-      });
-      
-      const sub1Header = document.getElementById('preview-sub1-header');
-      const sub2Header = document.getElementById('preview-sub2-header');
-      if (sub1Header) sub1Header.textContent = document.getElementById('sub1-name').value;
-      if (sub2Header) sub2Header.textContent = document.getElementById('sub2-name').value;
-
-      syncAssessmentTable();
-      renderVisualizer();
-    }
-
-    plannerFields.forEach(field => {
-      const inputEl = document.getElementById(field.id);
-      if (inputEl) {
-        inputEl.addEventListener('input', updateLivePreview);
-      }
-    });
-
-    // ========================================================================
-    // ASSESSMENT LIST DATA & TABLE EDITING
-    // ========================================================================
     let assessmentsData = [
-      { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Diagnostic quiz naming body parts (head, arms, legs).', sub2: 'BI: Writing personal identities (name, age, hobi) on notebook.' },
-      { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Identify body part locations by assembling paper puppet parts.', sub2: 'English: Introduce name and age in small groups.' },
-      { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Describe primary functions of at least five major body parts.', sub2: 'BI: Introduce self in front of class using written scripts.' },
-      { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Puppet construction check (Criteria: Naming, describing, effort).', sub2: 'English & BI: Self-introduction speech presenting the puppet as a visual aid.' }
+      { id: 1, week: 'Week 1', type: 'Formative Check', tasks: ['Science: Diagnostic quiz naming body parts (head, arms, legs).', 'BI: Writing personal identities (name, age, hobi) on notebook.'] },
+      { id: 2, week: 'Week 2', type: 'Formative Check', tasks: ['Science: Identify body part locations by assembling paper puppet parts.', 'English: Introduce name and age in small groups.'] },
+      { id: 3, week: 'Week 3', type: 'Summative Milestone', tasks: ['Science: Describe primary functions of at least five major body parts.', 'BI: Introduce self in front of class using written scripts.'] },
+      { id: 4, week: 'Week 4', type: 'Final Practical', tasks: ['Science: Puppet construction check (Criteria: Naming, describing, effort).', 'English & BI: Self-introduction speech presenting the puppet as a visual aid.'] }
     ];
 
+    const subjectsFormContainer = document.getElementById('subjects-form-container');
+    const addSubjectBtn = document.getElementById('add-subject-btn');
     const assessmentsContainer = document.getElementById('assessments-container');
     const addAssessmentBtn = document.getElementById('add-assessment-btn');
 
+    // ========================================================================
+    // SUBJECTS EDITOR RENDERING
+    // ========================================================================
+    function renderSubjectsForm() {
+      subjectsFormContainer.innerHTML = '';
+      subjectsData.forEach((sub, idx) => {
+        const isRemoveable = subjectsData.length > 1;
+        const card = document.createElement('div');
+        card.className = 'subject-form-card';
+        card.innerHTML = `
+          ${isRemoveable ? `<button type="button" class="remove-subject-btn" onclick="removeSubject(${sub.id})">×</button>` : ''}
+          <h4 style="font-size: 0.95rem; color: ${idx === 0 ? 'var(--secondary)' : idx === 1 ? 'var(--primary)' : 'var(--accent)'}; margin-bottom: 1rem;">Subject Area ${idx + 1}</h4>
+          
+          <div class="form-group">
+            <label>Subject Name</label>
+            <input type="text" value="${sub.name}" oninput="updateSubjectField(${sub.id}, 'name', this.value)">
+          </div>
+          <div class="form-group">
+            <label>Teacher Name(s)</label>
+            <input type="text" value="${sub.teacher}" oninput="updateSubjectField(${sub.id}, 'teacher', this.value)">
+          </div>
+          <div class="form-group">
+            <label>Learning Objective</label>
+            <textarea rows="3" oninput="updateSubjectField(${sub.id}, 'obj', this.value)">${sub.obj}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Prerequisite Knowledge/Skills</label>
+            <input type="text" value="${sub.prereq}" oninput="updateSubjectField(${sub.id}, 'prereq', this.value)">
+          </div>
+        `;
+        subjectsFormContainer.appendChild(card);
+      });
+      
+      updateLivePreview();
+    }
+
+    function updateSubjectField(id, field, value) {
+      const idx = subjectsData.findIndex(s => s.id === id);
+      if (idx !== -1) {
+        subjectsData[idx][field] = value;
+        updateLivePreview();
+        renderFormAssessments(); // Re-render weekly labels to match updated names
+      }
+    }
+
+    function addSubject() {
+      const nextId = subjectsData.length > 0 ? Math.max(...subjectsData.map(s => s.id)) + 1 : 1;
+      subjectsData.push({
+        id: nextId,
+        name: `Subject ${subjectsData.length + 1}`,
+        teacher: "",
+        obj: "",
+        prereq: ""
+      });
+      
+      // Add empty task string for this new subject to each week's assessment row
+      assessmentsData.forEach(as => {
+        as.tasks.push('');
+      });
+
+      renderSubjectsForm();
+      renderFormAssessments();
+    }
+
+    function removeSubject(id) {
+      const idx = subjectsData.findIndex(s => s.id === id);
+      if (idx !== -1) {
+        subjectsData.splice(idx, 1);
+        
+        // Remove the corresponding task index from all weeks
+        assessmentsData.forEach(as => {
+          as.tasks.splice(idx, 1);
+        });
+
+        renderSubjectsForm();
+        renderFormAssessments();
+      }
+    }
+
+    addSubjectBtn.addEventListener('click', addSubject);
+
+    // ========================================================================
+    // WEEKLY ASSESSMENT EDITOR RENDERING (Dynamic inputs per subject)
+    // ========================================================================
     function renderFormAssessments() {
       assessmentsContainer.innerHTML = '';
       assessmentsData.forEach(as => {
         const card = document.createElement('div');
         card.className = 'assessment-item-card';
+        
+        // Build task inputs for each active subject
+        let taskInputsHtml = '';
+        subjectsData.forEach((sub, sIdx) => {
+          const taskValue = as.tasks[sIdx] || '';
+          taskInputsHtml += `
+            <div class="form-group" style="margin-top: 0.5rem;">
+              <label>${sub.name} Tasks</label>
+              <input type="text" value="${taskValue}" oninput="updateAssessmentTask(${as.id}, ${sIdx}, this.value)" placeholder="Enter weekly tasks / checkpoints">
+            </div>
+          `;
+        });
+
         card.innerHTML = `
           <button type="button" class="remove-btn" onclick="removeAssessmentRow(${as.id})">×</button>
           <div class="form-row-2">
@@ -1835,33 +1874,25 @@
               </select>
             </div>
           </div>
-          <div class="form-group" style="margin-top:0.75rem;">
-            <label id="lbl-sub1-${as.id}">Subject A Tasks</label>
-            <input type="text" value="${as.sub1}" oninput="updateAssessmentField(${as.id}, 'sub1', this.value)" placeholder="Assessments / Activities">
-          </div>
-          <div class="form-group">
-            <label id="lbl-sub2-${as.id}">Subject B Tasks</label>
-            <input type="text" value="${as.sub2}" oninput="updateAssessmentField(${as.id}, 'sub2', this.value)" placeholder="Assessments / Activities">
-          </div>
+          ${taskInputsHtml}
         `;
         assessmentsContainer.appendChild(card);
-        updateLabelTexts(as.id);
       });
-    }
-
-    function updateLabelTexts(id) {
-      const sub1Val = document.getElementById('sub1-name').value;
-      const sub2Val = document.getElementById('sub2-name').value;
-      const lbl1 = document.getElementById(`lbl-sub1-${id}`);
-      const lbl2 = document.getElementById(`lbl-sub2-${id}`);
-      if (lbl1) lbl1.textContent = `${sub1Val} Assessments`;
-      if (lbl2) lbl2.textContent = `${sub2Val} Assessments`;
     }
 
     function updateAssessmentField(id, field, value) {
       const idx = assessmentsData.findIndex(item => item.id === id);
       if (idx !== -1) {
         assessmentsData[idx][field] = value;
+        syncAssessmentTable();
+        renderVisualizer();
+      }
+    }
+
+    function updateAssessmentTask(weekId, subjectIndex, value) {
+      const idx = assessmentsData.findIndex(item => item.id === weekId);
+      if (idx !== -1) {
+        assessmentsData[idx].tasks[subjectIndex] = value;
         syncAssessmentTable();
         renderVisualizer();
       }
@@ -1876,37 +1907,136 @@
 
     addAssessmentBtn.addEventListener('click', () => {
       const nextId = assessmentsData.length > 0 ? Math.max(...assessmentsData.map(d => d.id)) + 1 : 1;
+      
+      // Initialize empty task string for each active subject
+      const newTasks = subjectsData.map(() => '');
+      
       assessmentsData.push({
         id: nextId,
         week: `Week ${nextId}`,
         type: 'Formative Check',
-        sub1: '',
-        sub2: ''
+        tasks: newTasks
       });
+      
       renderFormAssessments();
       syncAssessmentTable();
       renderVisualizer();
     });
 
+    // ========================================================================
+    // SYNC PREVIEW & VISUALIZER
+    // ========================================================================
+    function updateLivePreview() {
+      // Sync metadata
+      document.getElementById('preview-title').textContent = document.getElementById('project-title').value;
+      document.getElementById('preview-grade-header').textContent = `Grade Level: ${document.getElementById('grade-level').value} | S.Y. 2025-2026`;
+      document.getElementById('preview-duration').textContent = `${document.getElementById('project-duration').value} Weeks`;
+      document.getElementById('preview-theme').textContent = document.getElementById('project-theme').value;
+      document.getElementById('preview-sequence').textContent = document.getElementById('sequence-adjustment').value;
+
+      // Sync objectives grid columns dynamically
+      const objGrid = document.getElementById('preview-objectives-grid');
+      objGrid.innerHTML = '';
+      subjectsData.forEach((sub, idx) => {
+        const box = document.createElement('div');
+        box.className = 'a4-obj-box';
+        // Add divider border for all columns except the last
+        if (idx < subjectsData.length - 1) {
+          box.style.borderRight = '1px solid #ddd';
+          box.style.paddingRight = '1rem';
+        }
+        box.innerHTML = `
+          <strong>Subject ${idx + 1}: ${sub.name}</strong>
+          <p style="margin-bottom: 0.35rem; font-size: 8.5pt;"><em>Teacher:</em> ${sub.teacher}</p>
+          <p><em>Objective:</em> ${sub.obj}</p>
+          <p style="margin-top: 0.45rem; font-size: 8pt;"><strong>Prerequisites:</strong> ${sub.prereq}</p>
+        `;
+        objGrid.appendChild(box);
+      });
+
+      // Recalculate CSS columns for objectives grid based on active count
+      objGrid.style.gridTemplateColumns = `repeat(${subjectsData.length}, 1fr)`;
+
+      syncAssessmentTable();
+      renderVisualizer();
+    }
+
+    // Attach event listeners to top inputs
+    ['project-title', 'grade-level', 'project-duration', 'project-theme', 'sequence-adjustment'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', updateLivePreview);
+    });
+
     function syncAssessmentTable() {
-      const tableBody = document.querySelector('#preview-timeline-table tbody');
-      if (!tableBody) return;
-      tableBody.innerHTML = '';
-      
+      const thead = document.getElementById('preview-timeline-thead');
+      const tbody = document.getElementById('preview-timeline-tbody');
+      if (!thead || !tbody) return;
+
+      // Render thead columns based on subjects list
+      let headsHtml = `<tr><th style="width: 12%;">When</th><th style="width: 18%;">Phase / Type</th>`;
+      subjectsData.forEach(sub => {
+        headsHtml += `<th>${sub.name} Assessments</th>`;
+      });
+      headsHtml += `</tr>`;
+      thead.innerHTML = headsHtml;
+
+      // Render tbody rows
+      tbody.innerHTML = '';
       assessmentsData.forEach(as => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${as.week}</strong></td>
-          <td><span class="badge ${as.type === 'Final Practical' ? 'badge-accent' : as.type === 'Summative Milestone' ? 'badge-primary' : 'badge-secondary'}">${as.type}</span></td>
-          <td>${as.sub1}</td>
-          <td>${as.sub2}</td>
+        let cellsHtml = `<td><strong>${as.week}</strong></td>
+                         <td><span class="badge ${as.type === 'Final Practical' ? 'badge-accent' : as.type === 'Summative Milestone' ? 'badge-primary' : 'badge-secondary'}">${as.type}</span></td>`;
+        
+        subjectsData.forEach((sub, sIdx) => {
+          const taskText = as.tasks[sIdx] || '';
+          cellsHtml += `<td>${taskText}</td>`;
+        });
+        
+        tr.innerHTML = cellsHtml;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Render Tab 4 Visualizer
+    const vizContainer = document.getElementById('viz-timeline-container');
+
+    function renderVisualizer() {
+      vizContainer.innerHTML = '';
+      assessmentsData.forEach(as => {
+        const row = document.createElement('div');
+        row.className = 'viz-week-row';
+        
+        let tracksHtml = '';
+        subjectsData.forEach((sub, sIdx) => {
+          const taskText = as.tasks[sIdx] || '<em>No assessments entered.</em>';
+          tracksHtml += `
+            <div class="viz-track t${(sIdx % 5) + 1}">
+              ${sIdx === 0 && as.type === 'Final Practical' ? '<span class="sync-indicator">Joint Culmination</span>' : sIdx === 0 && as.type === 'Summative Milestone' ? '<span class="sync-indicator" style="background:var(--primary-glow); color:var(--primary);">Co-design Check</span>' : ''}
+              <h4>${sub.name} Tasks</h4>
+              <p>${taskText}</p>
+            </div>
+          `;
+        });
+
+        row.innerHTML = `
+          <div class="viz-label">${as.week}</div>
+          <div class="viz-tracks-container">
+            ${tracksHtml}
+          </div>
         `;
-        tableBody.appendChild(tr);
+        
+        // Dynamically style visualizer track container columns
+        const trackGrid = row.querySelector('.viz-tracks-container');
+        if (trackGrid) {
+          trackGrid.style.gridTemplateColumns = `repeat(${subjectsData.length}, 1fr)`;
+        }
+
+        vizContainer.appendChild(row);
       });
     }
 
     // ========================================================================
-    // TEMPLATE LOADER SYSTEM (With 5 templates)
+    // MODEL TEMPLATES LOADER (Mapped to new dynamic array layout)
     // ========================================================================
     const templates = {
       'template-1': {
@@ -1914,24 +2044,16 @@
         grade: "Primary X (1st Sem)",
         duration: 4,
         theme: "Introduction and Body Parts (S.Y. 2025-2026)",
-        sub1: {
-          name: "Science",
-          teacher: "Primary X Science Teacher",
-          obj: "(1) Name at least 8 major external body parts with 100% accuracy. (2) Identify the correct location of body parts by assembling a paper puppet. (3) Describe the primary functions (e.g. We use our eyes to see, legs to walk). (4) Explain how body parts make daily life easier.",
-          prereq: "Basic visual identification of body parts."
-        },
-        sub2: {
-          name: "Language (English & BI)",
-          teacher: "Primary X Language Teacher",
-          obj: "Bahasa: Siswa dapat menyebutkan identitas diri (nama, umur, tanggal lahir, alamat, hobi) secara benar dan lengkap. English: Introduce themselves confidently in front of the class.",
-          prereq: "Basic spelling and sentence writing in English and Bahasa Indonesia."
-        },
         seq: "Language teachers (English & Bahasa) coordinate self-introduction speech templates during Weeks 1 and 2, which run parallel to the Science body parts naming lectures. In Week 3, students apply these by presenting their puppets in front of the class.",
+        subjects: [
+          { id: 1, name: "Science", teacher: "Primary X Science Teacher", obj: "(1) Name at least 8 major external body parts with 100% accuracy. (2) Identify the correct location of body parts by assembling a paper puppet. (3) Describe the primary functions (e.g. We use our eyes to see, legs to walk). (4) Explain how body parts make daily life easier.", prereq: "Basic visual identification of body parts." },
+          { id: 2, name: "Language (English & BI)", teacher: "Primary X Language Teacher", obj: "Bahasa: Siswa dapat menyebutkan identitas diri (nama, umur, tanggal lahir, alamat, hobi) secara benar dan lengkap. English: Introduce themselves confidently in front of the class.", prereq: "Basic spelling and sentence writing in English and Bahasa Indonesia." }
+        ],
         assessments: [
-          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Diagnostic quiz naming body parts (head, arms, legs).', sub2: 'BI: Writing personal identities (name, age, hobi) on notebook.' },
-          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Identify body part locations by assembling paper puppet parts.', sub2: 'English: Introduce name and age in small groups.' },
-          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Describe primary functions of at least five major body parts.', sub2: 'BI: Introduce self in front of class using written scripts.' },
-          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Puppet construction check (Criteria: Naming, describing, effort).', sub2: 'English & BI: Self-introduction speech presenting the puppet as a visual aid.' }
+          { id: 1, week: 'Week 1', type: 'Formative Check', tasks: ['Science: Diagnostic quiz naming body parts (head, arms, legs).', 'BI: Writing personal identities (name, age, hobi) on notebook.'] },
+          { id: 2, week: 'Week 2', type: 'Formative Check', tasks: ['Science: Identify body part locations by assembling paper puppet parts.', 'English: Introduce name and age in small groups.'] },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', tasks: ['Science: Describe primary functions of at least five major body parts.', 'BI: Introduce self in front of class using written scripts.'] },
+          { id: 4, week: 'Week 4', type: 'Final Practical', tasks: ['Science: Puppet construction check (Criteria: Naming, describing, effort).', 'English & BI: Self-introduction speech presenting the puppet as a visual aid.'] }
         ]
       },
       'template-2': {
@@ -1939,24 +2061,17 @@
         grade: "Primary X (1st Sem Final)",
         duration: 4,
         theme: "Making miniature stage drama using different recycled and used materials",
-        sub1: {
-          name: "Science",
-          teacher: "Primary X Science Teacher",
-          obj: "Properties: Identify and explain properties of different recycled and used materials (e.g. paper, plastic, fabric, wood) for structural design.",
-          prereq: "Basic sorting of objects by simple properties."
-        },
-        sub2: {
-          name: "English, Bahasa & RS",
-          teacher: "Primary X Teachers",
-          obj: "English: Write procedure text of stage construction. RS: Story about Joshua & Caleb / Ruth helps Naomi. BI/PPKn: Meniru gerakan dalam cerita.",
-          prereq: "Active listening of narratives, basic gross-motor coordination."
-        },
         seq: "RS introduces the narrative scripts. English coordinates instructions/procedures of stage construction. Science guides material checks (flexibility, rigidity) to build a stable theater framework.",
+        subjects: [
+          { id: 1, name: "Science", teacher: "Primary X Science Teacher", obj: "Properties: Identify and explain properties of different recycled and used materials (e.g. paper, plastic, fabric, wood) for structural design.", prereq: "Basic sorting of objects by simple properties." },
+          { id: 2, name: "English & Bahasa", teacher: "Primary X Languages Teacher", obj: "English: Write procedure text of stage construction. BI/PPKn: Meniru gerakan dalam cerita.", prereq: "Active listening of narratives, basic gross-motor coordination." },
+          { id: 3, name: "Religious Studies", teacher: "Primary X RS Teacher", obj: "Identify and reflect values from story about Joshua & Caleb / Ruth helps Naomi.", prereq: "Basic listening and reflection values." }
+        ],
         assessments: [
-          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Sort collected materials into groups (plastics, metals, papers).', sub2: 'RS: Read and order key events in the story of Joshua and Caleb.' },
-          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Build structural stage foundation, testing for strength.', sub2: 'English: Write out the material list and step 1-3 of building the stage.' },
-          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Fabricate characters and decorative props.', sub2: 'BI/PPKn: Recreate script movements (meniru gerakan dalam cerita).' },
-          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science & Arts: Stage and characters construction check.', sub2: 'English & BI: Deliver the miniature stage drama story performance.' }
+          { id: 1, week: 'Week 1', type: 'Formative Check', tasks: ['Science: Sort collected materials into groups (plastics, metals, papers).', 'English: Label stage part names.', 'RS: Read and order key events in the story of Joshua and Caleb.'] },
+          { id: 2, week: 'Week 2', type: 'Formative Check', tasks: ['Science: Build structural stage foundation, testing for strength.', 'English: Write out the material list and step 1-3 of building the stage.', 'RS: Share character traits of Joshua.'] },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', tasks: ['Science: Fabricate characters and decorative props.', 'Bahasa: Recreate script movements (meniru gerakan dalam cerita).', 'RS: Finalize script monologue reflections.'] },
+          { id: 4, week: 'Week 4', type: 'Final Practical', tasks: ['Science & Arts: Stage and characters construction check.', 'English & BI: Deliver the miniature stage drama story performance.', 'RS: Submit the written script and monologue grading.'] }
         ]
       },
       'template-3': {
@@ -1964,24 +2079,18 @@
         grade: "Primary X (2nd Sem Final)",
         duration: 4,
         theme: "Water Games Day: Coordination, rhythm, reading clock, and buoyancy",
-        sub1: {
-          name: "Science",
-          teacher: "Primary X Science Teacher",
-          obj: "1. Predict whether familiar objects float or sink. 2. Collect and record observations using a simple chart. 3. Apply buoyancy to design and construct a simple floating device.",
-          prereq: "Understanding terms heavy vs light, float vs sink."
-        },
-        sub2: {
-          name: "Mathematics",
-          teacher: "Primary X Math Teacher",
-          obj: "Recognize and read analog clock times (o’clock). Write correct time after observing an analog clock. Construct personal o’clock clock product.",
-          prereq: "Recognizing numbers 1-12 on dials."
-        },
         seq: "Math teaches reading clock (o'clock clock product) in Week 1, which will be tested in PE/Water games. Science covers floating and sinking concepts, building devices in Week 3, leading to tests in Week 4. PE handles obstacle course. Music handles body percussion.",
+        subjects: [
+          { id: 1, name: "Science", teacher: "Primary X Science Teacher", obj: "1. Predict whether familiar objects float or sink. 2. Collect and record observations. 3. Apply buoyancy to design and construct floating devices.", prereq: "Heavy vs light, float vs sink concepts." },
+          { id: 2, name: "Mathematics", teacher: "Primary X Math Teacher", obj: "Recognize and read analog clock times (o’clock). Construct personal o’clock clock product.", prereq: "Recognizing numbers 1-12 on dials." },
+          { id: 3, name: "PE", teacher: "Primary X PE Teacher", obj: "Water obstacle course designed to develop coordination, balance, and gross-motor skills.", prereq: "Basic water familiarity, balancing." },
+          { id: 4, name: "Music & RS", teacher: "Primary X Music Teacher", obj: "Rhythms: Body percussion (claps, taps) to build confidence and coordination.", prereq: "Clapping to simple beats." }
+        ],
         assessments: [
-          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Identify factors affecting floating (weight, material).', sub2: 'Math: Construct own o’clock clock product to support clock reading.' },
-          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Conduct and chart float/sink predictions of 5 common items.', sub2: 'Music & RS: Practice body percussion (claps, taps) to build rhythm.' },
-          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Assemble final buoyancy device prototype using plastic/foam.', sub2: 'PE: Run obstacle course trials to check coordination and balance.' },
-          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science & English: Float/sink experiment and simple report writing.', sub2: 'Math & PE: Analog time reading station challenge / water games obstacle course.' }
+          { id: 1, week: 'Week 1', type: 'Formative Check', tasks: ['Science: Identify factors affecting floating.', 'Math: Construct own o’clock clock product.', 'PE: Learn water safety and breathing drills.', 'Music: Practice clapping 4/4 time beats.'] },
+          { id: 2, week: 'Week 2', type: 'Formative Check', tasks: ['Science: Chart float/sink predictions of 5 common items.', 'Math: Practice reading o'clock on worksheet.', 'PE: Balance on floating obstacles.', 'Music & RS: Memorize Nehemiah body percussion sync.'] },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', tasks: ['Science: Assemble final buoyancy device prototype using foam.', 'Math: Tell time based on PE station prompts.', 'PE: Run obstacle course trials.', 'Music: Record joint rhythm group practice.'] },
+          { id: 4, week: 'Week 4', type: 'Final Practical', tasks: ['Science & English: Float/sink experiment and simple report writing.', 'Math: Analog time reading station challenge.', 'PE: Complete the final water games obstacle run.', 'Music: Body percussion class performance.'] }
         ]
       },
       'template-4': {
@@ -1989,24 +2098,18 @@
         grade: "Primary 3 (1st Sem Final)",
         duration: 4,
         theme: "My Book of Light: Shadows, creative storytelling, and math coordinates",
-        sub1: {
-          name: "Science",
-          teacher: "Primary 3 Science Teacher",
-          obj: "Investigate how light behaves. Identify sources of light. Explain shadow formations and opaque/transparent properties of materials.",
-          prereq: "Basic sensory definitions of shadows."
-        },
-        sub2: {
-          name: "ELA & Math",
-          teacher: "Primary 3 Core Teachers",
-          obj: "ELA: Draft a creative story book using descriptors, shapes, colors, and body parts. Math: Formulate and solve coordinate grid word problems based on the ELA story.",
-          prereq: "Grid systems coordinates plotting, standard storytelling paragraph structure."
-        },
         seq: "Science leads source experiments in Week 1. ELA coordinates descriptive writing during Weeks 2-3. Math builds story word problems concurrently. Art/PPKn sculpts clay landmarks for mapping.",
+        subjects: [
+          { id: 1, name: "Science", teacher: "Primary 3 Science Teacher", obj: "Investigate light sources. Analyze transparent/translucent/opaque properties of materials for puppet design.", prereq: "Light vs dark concepts." },
+          { id: 2, name: "English (ELA)", teacher: "Primary 3 English Teacher", obj: "Write a creative story booklet using parts of the body, colors, shapes, and adjectives.", prereq: "Sentence structure, descriptive words." },
+          { id: 3, name: "Math", teacher: "Primary 3 Math Teacher", obj: "Formulate coordinate grid word problems based on the English story layout.", prereq: "Plotting coordinates on grids." },
+          { id: 4, name: "Arts & PPKn", teacher: "Primary 3 Art Teacher", obj: "Art: Making 3D landmarks (clay/recyclables). PPKn: Map going to school using landmarks.", prereq: "Basic clay molding, simple maps." }
+        ],
         assessments: [
-          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Differentiate light sources vs reflection surfaces in lab.', sub2: 'Math: Practice coordinate point identification on school map.' },
-          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Measure shadow lengths at three different times of day.', sub2: 'ELA: Write drafts describing characters using body part adjectives.' },
-          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science & Art: Select paper/clay materials and construct puppet filters.', sub2: 'Math & ELA: Combine story narrative with grid coordinate equations.' },
-          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Final Book of Light puppet shadows inspection.', sub2: 'ELA & Math: Deliver storytelling presentations and solve peer math problems.' }
+          { id: 1, week: 'Week 1', type: 'Formative Check', tasks: ['Science: Categorize transparent/opaque classroom items.', 'ELA: Brainstorm story outline and characters.', 'Math: Plot coordinate points of landmarks.', 'Arts: Mold basic geometric clay structures.'] },
+          { id: 2, week: 'Week 2', type: 'Formative Check', tasks: ['Science: Measure shadow lengths at different distances.', 'ELA: Draft pages 1-2 using body descriptive adjectives.', 'Math: Solve simple coordinate distance problems.', 'PPKn: Draw school maps with coordinates.'] },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', tasks: ['Science: Build shadow puppet characters with filters.', 'ELA: Draft final story pages with colors & shapes.', 'Math: Create word problems based on story variables.', 'Arts: Mold final 3D clay school landmarks.'] },
+          { id: 4, week: 'Week 4', type: 'Final Practical', tasks: ['Science: Shadow puppet construction check.', 'ELA: Read story booklet in front of peers.', 'Math: Exchange and solve student-made word problems.', 'Arts: Assemble the 3D landmark coordinates map.'] }
         ]
       },
       'template-5': {
@@ -2014,24 +2117,19 @@
         grade: "Primary 2 (2nd Sem Final)",
         duration: 4,
         theme: "Shopping Center: Currency calculations, blueprints, and community jobs",
-        sub1: {
-          name: "Science",
-          teacher: "Primary 2 Science Teacher",
-          obj: "Evaluate knowledge of electrical components. Design a 'New Electrical Appliance' blueprint diagram and construct basic circuits.",
-          prereq: "Identifying common electrical objects."
-        },
-        sub2: {
-          name: "Mathematics",
-          teacher: "Primary 2 Math Teacher",
-          obj: "Money: Calculate coin/bill values. Simulate purchasing raw project materials, calculating cost totals and change.",
-          prereq: "Standard subtraction and addition values up to 1,000."
-        },
         seq: "Math shifts money operations early to Week 1. Science leads circuit construction blueprints. English, BI, and Chinese map shops, jobs, and shopping roleplay dialogues.",
+        subjects: [
+          { id: 1, name: "Science", teacher: "Primary 2 Science Teacher", obj: "Evaluate knowledge of electrical components. Design blueprints and construct circuits for a 'New Appliance'.", prereq: "Electrical appliances concepts." },
+          { id: 2, name: "Math", teacher: "Primary 2 Math Teacher", obj: "Money: Calculate coin/bill values. Buy building materials from teachers, calculating total costs and change.", prereq: "Subtraction/addition up to 1,000." },
+          { id: 3, name: "English & BI", teacher: "Primary 2 Core Teachers", obj: "English: Label city spaces. BI: Pekerjaan dan Bijak Memakai Uang (jobs & financial wisdom).", prereq: "Basic city vocabulary." },
+          { id: 4, name: "Chinese Language", teacher: "Primary 2 CL Teacher", obj: "CL: Match Hanzi/Pinyin and complete shopping dialogue roleplays.", prereq: "Write basic pinyin." },
+          { id: 5, name: "Religious Studies", teacher: "Primary 2 RS Teacher", obj: "RS: Understand responsibility through stories (Miriam Obeys).", prereq: "Understanding help/respect concepts." }
+        ],
         assessments: [
-          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Match circuit symbols to correct components (battery, lamp).', sub2: 'Math: Add and subtract values using currency bills up to 1,000.' },
-          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Develop blueprint circuit diagram of new appliance.', sub2: 'English & BI: Label shop locations and describe community occupations.' },
-          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Build electrical prototype with modeling clay details.', sub2: 'Math: Purchase prototype construction goods using project budgets.' },
-          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Pitch completed electrical appliance prototype to businessmen.', sub2: 'Math & CL: Shopping Center roleplay and buying dialogue in Chinese.' }
+          { id: 1, week: 'Week 1', type: 'Formative Check', tasks: ['Science: Connect light bulb circuits.', 'Math: Identify bills and count totals.', 'English: List jobs in local town.', 'CL: Learn food/drinks vocabulary.', 'RS: Define Miriam's responsibility.'] },
+          { id: 2, week: 'Week 2', type: 'Formative Check', tasks: ['Science: Draw appliance blueprint diagram.', 'Math: Compute simple change worksheets.', 'BI: Read rules on saving money.', 'CL: Complete missing Hanzi worksheets.', 'RS: Share ways to help family.'] },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', tasks: ['Science: Build appliance box framework.', 'Math: Purchase prototype supplies.', 'English: Draft store advertisements.', 'CL: Practice shopping dialogue prompts.', 'RS: Complete responsibility journal.'] },
+          { id: 4, week: 'Week 4', type: 'Final Practical', tasks: ['Science: Pitch finished circuit appliance prototype.', 'Math: Submit purchasing records and budget.', 'BI/English: Roleplay store owner interviews.', 'CL: Conduct live shop dialogue.', 'RS: Submit final reflection sheet.'] }
         ]
       }
     };
@@ -2043,28 +2141,19 @@
         const id = btn.getAttribute('data-template-id');
         const data = templates[id];
         if (data) {
-          // Fill text fields
+          // Fill top text fields
           document.getElementById('project-title').value = data.title;
           document.getElementById('grade-level').value = data.grade;
           document.getElementById('project-duration').value = data.duration;
           document.getElementById('project-theme').value = data.theme;
-          
-          document.getElementById('sub1-name').value = data.sub1.name;
-          document.getElementById('sub1-teacher').value = data.sub1.teacher;
-          document.getElementById('sub1-obj').value = data.sub1.obj;
-          document.getElementById('sub1-prereq').value = data.sub1.prereq;
-          
-          document.getElementById('sub2-name').value = data.sub2.name;
-          document.getElementById('sub2-teacher').value = data.sub2.teacher;
-          document.getElementById('sub2-obj').value = data.sub2.obj;
-          document.getElementById('sub2-prereq').value = data.sub2.prereq;
-          
           document.getElementById('sequence-adjustment').value = data.seq;
 
-          // Fill assessments
+          // Replace subjects & assessments
+          subjectsData = JSON.parse(JSON.stringify(data.subjects));
           assessmentsData = JSON.parse(JSON.stringify(data.assessments));
           
-          // Render updates
+          // Re-render forms & update preview
+          renderSubjectsForm();
           renderFormAssessments();
           updateLivePreview();
 
@@ -2074,37 +2163,6 @@
         }
       });
     });
-
-    // ========================================================================
-    // TAB 4: ASSESSMENT VISUALIZER RENDERING
-    // ========================================================================
-    const vizContainer = document.getElementById('viz-timeline-container');
-
-    function renderVisualizer() {
-      vizContainer.innerHTML = '';
-      const sub1Val = document.getElementById('sub1-name').value;
-      const sub2Val = document.getElementById('sub2-name').value;
-
-      assessmentsData.forEach(as => {
-        const row = document.createElement('div');
-        row.className = 'viz-week-row';
-        row.innerHTML = `
-          <div class="viz-label">${as.week}</div>
-          
-          <div class="viz-track t1">
-            ${as.type === 'Final Practical' ? '<span class="sync-indicator">Joint Culmination</span>' : as.type === 'Summative Milestone' ? '<span class="sync-indicator" style="background:var(--primary-glow); color:var(--primary);">Co-design Check</span>' : ''}
-            <h4>${sub1Val} Tasks</h4>
-            <p>${as.sub1 || '<em>No assessments entered.</em>'}</p>
-          </div>
-          
-          <div class="viz-track t2">
-            <h4>${sub2Val} Tasks</h4>
-            <p>${as.sub2 || '<em>No assessments entered.</em>'}</p>
-          </div>
-        `;
-        vizContainer.appendChild(row);
-      });
-    }
 
     // ========================================================================
     // EXPORT & PRINT HANDLERS
@@ -2118,12 +2176,6 @@
       const grade = document.getElementById('grade-level').value;
       const duration = document.getElementById('project-duration').value;
       const theme = document.getElementById('project-theme').value;
-      const sub1 = document.getElementById('sub1-name').value;
-      const sub2 = document.getElementById('sub2-name').value;
-      const sub1Teacher = document.getElementById('sub1-teacher').value;
-      const sub2Teacher = document.getElementById('sub2-teacher').value;
-      const sub1Obj = document.getElementById('sub1-obj').value;
-      const sub2Obj = document.getElementById('sub2-obj').value;
       const seq = document.getElementById('sequence-adjustment').value;
 
       let md = `# Horizontal Alignment File: ${title}\n`;
@@ -2135,15 +2187,28 @@
       md += `## Subject Collaboration Details\n`;
       md += `| Subject | Teacher | Learning Objective | Prerequisites |\n`;
       md += `|---|---|---|---|\n`;
-      md += `| ${sub1} | ${sub1Teacher} | ${sub1Obj.replace(/\n/g, ' ')} | ${document.getElementById('sub1-prereq').value} |\n`;
-      md += `| ${sub2} | ${sub2Teacher} | ${sub2Obj.replace(/\n/g, ' ')} | ${document.getElementById('sub2-prereq').value} |\n\n`;
+      subjectsData.forEach(sub => {
+        md += `| ${sub.name} | ${sub.teacher} | ${sub.obj.replace(/\n/g, ' ')} | ${sub.prereq} |\n`;
+      });
+      md += `\n`;
       
       md += `## Coordinated Timeline\n`;
-      md += `| When | Phase Type | ${sub1} Assessments | ${sub2} Assessments |\n`;
-      md += `|---|---|---|---|\n`;
+      md += `| When | Phase Type | `;
+      subjectsData.forEach(sub => {
+        md += `${sub.name} Assessments | `;
+      });
+      md += `\n|`;
+      subjectsData.forEach(() => {
+        md += '---|';
+      });
+      md += '---|---|\n';
       
       assessmentsData.forEach(as => {
-        md += `| ${as.week} | ${as.type} | ${as.sub1} | ${as.sub2} |\n`;
+        md += `| ${as.week} | ${as.type} | `;
+        subjectsData.forEach((sub, sIdx) => {
+          md += `${as.tasks[sIdx] || ''} | `;
+        });
+        md += `\n`;
       });
 
       navigator.clipboard.writeText(md).then(() => {
@@ -2160,19 +2225,8 @@
         grade: document.getElementById('grade-level').value,
         duration: document.getElementById('project-duration').value,
         theme: document.getElementById('project-theme').value,
-        sub1: {
-          name: document.getElementById('sub1-name').value,
-          teacher: document.getElementById('sub1-teacher').value,
-          obj: document.getElementById('sub1-obj').value,
-          prereq: document.getElementById('sub1-prereq').value
-        },
-        sub2: {
-          name: document.getElementById('sub2-name').value,
-          teacher: document.getElementById('sub2-teacher').value,
-          obj: document.getElementById('sub2-obj').value,
-          prereq: document.getElementById('sub2-prereq').value
-        },
         seq: document.getElementById('sequence-adjustment').value,
+        subjects: subjectsData,
         assessments: assessmentsData
       };
       
@@ -2191,6 +2245,7 @@
     // APP INITIALIZATION
     // ========================================================================
     window.addEventListener('DOMContentLoaded', () => {
+      renderSubjectsForm();
       renderFormAssessments();
       updateLivePreview();
     });
