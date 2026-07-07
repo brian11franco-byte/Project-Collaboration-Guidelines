@@ -986,6 +986,7 @@
       text-transform: uppercase;
     }
 
+    /* Print Styles overrides */
      /* Print Styles overrides */
     @media print {
       @page {
@@ -1366,6 +1367,9 @@
               <button class="btn btn-outline" id="download-json-btn">
                 <span>💾</span> Export Backup
               </button>
+              <button class="btn btn-outline" id="save-template-btn">
+                <span>📁</span> Save to Templates
+              </button>
               <button class="btn btn-primary" id="print-btn">
                 <span>🖨️</span> Print Alignment File
               </button>
@@ -1433,122 +1437,7 @@
         </div>
 
         <div class="templates-grid">
-          
-          <!-- Template 1: Body Puppet Intro Project -->
-          <div class="glass-card template-card science-math">
-            <div class="template-meta">
-              <span class="badge badge-secondary">2 Subjects</span>
-              <span class="badge badge-accent">Primary X (1st Sem)</span>
-            </div>
-            <h3>Body Puppet Intro Project</h3>
-            <p>Students learn body part names and locations in Science, construct a paper body puppet to build fine motor skills, and introduce themselves using new vocabulary in English and Bahasa Indonesia.</p>
-            
-            <div class="template-details">
-              <strong>Horizontal Alignment Points:</strong>
-              <ul>
-                <li>Science guides the physical puppet creation and biological naming of parts.</li>
-                <li>Bahasa Indonesia and English coordinate self-introduction parameters (name, age, hobi).</li>
-                <li>Final Practical Assessment: Introducing self to the class using the constructed paper puppet as a visual aid.</li>
-              </ul>
-            </div>
-            
-            <button class="btn btn-primary load-template-btn" data-template-id="template-1">
-              Load & Edit Template
-            </button>
-          </div>
-
-          <!-- Template 2: Miniature Stage Drama Project -->
-          <div class="glass-card template-card science-math">
-            <div class="template-meta">
-              <span class="badge badge-secondary">3 Subjects</span>
-              <span class="badge badge-accent">Primary X (1st Sem Final)</span>
-            </div>
-            <h3>Miniature Stage Drama</h3>
-            <p>Students build a miniature physical theater stage using recycled materials in Science, and write and perform a script based on a historical/religious narrative in English, Bahasa, and Religious Studies.</p>
-            
-            <div class="template-details">
-              <strong>Horizontal Alignment Points:</strong>
-              <ul>
-                <li>Science teaches properties of recycled materials to build a durable stage and props.</li>
-                <li>English and Bahasa coordinate procedure writing and narrative monologue movements.</li>
-                <li>RS provides script materials based on historical stories (e.g. Joshua and Caleb).</li>
-              </ul>
-            </div>
-            
-            <button class="btn btn-primary load-template-btn" data-template-id="template-2">
-              Load & Edit Template
-            </button>
-          </div>
-
-          <!-- Template 3: Water Games Day & Buoyancy -->
-          <div class="glass-card template-card physics-cs" style="border-top-color: var(--accent);">
-            <div class="template-meta">
-              <span class="badge badge-accent">4 Subjects</span>
-              <span class="badge badge-accent">Primary X (2nd Sem Final)</span>
-            </div>
-            <h3>Water Games Day & Buoyancy</h3>
-            <p>A full-day interactive sports and science event. Students perform time-reading on clock faces, test floatation devices in Science, play obstacle games in PE, and tap rhythm beats in Music.</p>
-            
-            <div class="template-details">
-              <strong>Horizontal Alignment Points:</strong>
-              <ul>
-                <li>Math teaches analog reading (o'clock clock product) used to verify timers in PE.</li>
-                <li>Science covers floating, sinking, and building a simple floating device.</li>
-                <li>Music and PE coordinate body percussion beats and physical gross motor movements.</li>
-              </ul>
-            </div>
-            
-            <button class="btn btn-primary load-template-btn" data-template-id="template-3">
-              Load & Edit Template
-            </button>
-          </div>
-
-          <!-- Template 4: My Book of Light -->
-          <div class="glass-card template-card science-math">
-            <div class="template-meta">
-              <span class="badge badge-secondary">4 Subjects</span>
-              <span class="badge badge-accent">Primary 3 (1st Sem Final)</span>
-            </div>
-            <h3>My Book of Light</h3>
-            <p>A collaborative storybook final project. Students study light and shadow properties in Science, draft creative narratives in ELA, build coordinates word problems in Math, and sculpt 3D shadow models in Art.</p>
-            
-            <div class="template-details">
-              <strong>Horizontal Alignment Points:</strong>
-              <ul>
-                <li>Science conducts light source experimentations; ELA applies descriptive adjectives to narrative settings.</li>
-                <li>Math designs algebraic word problems built on story elements.</li>
-                <li>Arts sculpts clay landmarks that act as shadows on the book pages.</li>
-              </ul>
-            </div>
-            
-            <button class="btn btn-primary load-template-btn" data-template-id="template-4">
-              Load & Edit Template
-            </button>
-          </div>
-
-          <!-- Template 5: Shopping Center -->
-          <div class="glass-card template-card physics-cs" style="border-top-color: var(--accent);">
-            <div class="template-meta">
-              <span class="badge badge-accent">5 Subjects</span>
-              <span class="badge badge-accent">Primary 2 (2nd Sem Final)</span>
-            </div>
-            <h3>Shopping Center</h3>
-            <p>A miniature town center construction project. Students design a new electrical appliance blueprint in Science, handle money transactions in Math, map city spaces in English, and execute buying dialogues in Chinese.</p>
-            
-            <div class="template-details">
-              <strong>Horizontal Alignment Points:</strong>
-              <ul>
-                <li>Math teaches money and calculations exactly when students buy prototype supplies.</li>
-                <li>Science builds simple electrical circuit loops inside clay/carton structures.</li>
-                <li>Languages structure buying dialogues (CL) and job/location cards (BI/English).</li>
-              </ul>
-            </div>
-            
-            <button class="btn btn-primary load-template-btn" data-template-id="template-5">
-              Load & Edit Template
-            </button>
-          </div>
-
+          <!-- Rendered dynamically by JavaScript -->
         </div>
       </section>
 
@@ -2142,7 +2031,7 @@
         theme: "Shopping Center: Currency calculations, blueprints, and community jobs",
         seq: "Math shifts money operations early to Week 1. Science leads circuit construction blueprints. English, BI, and Chinese map shops, jobs, and shopping roleplay dialogues.",
         subjects: [
-          { id: 1, name: "Science", teacher: "Primary 2 Science Teacher", obj: "Evaluate knowledge of electrical components. Design blueprints and construct circuits for a \"New Appliance\".", prereq: "Electrical appliances concepts." },
+          { id: 1, name: "Science", teacher: "Primary 2 Science Teacher", obj: "Evaluate knowledge of electrical components. Design blueprints and construct circuits for a "New Appliance".", prereq: "Electrical appliances concepts." },
           { id: 2, name: "Math", teacher: "Primary 2 Math Teacher", obj: "Money: Calculate coin/bill values. Buy building materials from teachers, calculating total costs and change.", prereq: "Subtraction/addition up to 1,000." },
           { id: 3, name: "English & BI", teacher: "Primary 2 Core Teachers", obj: "English: Label city spaces. BI: Pekerjaan dan Bijak Memakai Uang (jobs & financial wisdom).", prereq: "Basic city vocabulary." },
           { id: 4, name: "Chinese Language", teacher: "Primary 2 CL Teacher", obj: "CL: Match Hanzi/Pinyin and complete shopping dialogue roleplays.", prereq: "Write basic pinyin." },
@@ -2157,34 +2046,142 @@
       }
     };
 
-    const loadButtons = document.querySelectorAll('.load-template-btn');
+    // ========================================================================
+    // DYNAMIC TEMPLATES RENDERER & LIFECYCLE
+    // ========================================================================
+    const templatesGrid = document.querySelector('.templates-grid');
 
-    loadButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-template-id');
-        const data = templates[id];
-        if (data) {
-          // Fill top text fields
-          document.getElementById('project-title').value = data.title;
-          document.getElementById('grade-level').value = data.grade;
-          document.getElementById('project-duration').value = data.duration;
-          document.getElementById('project-theme').value = data.theme;
-          document.getElementById('sequence-adjustment').value = data.seq;
+    function renderTemplatesTab() {
+      templatesGrid.innerHTML = '';
+      let customTemplates = JSON.parse(localStorage.getItem('custom_templates')) || [];
 
-          // Replace subjects & assessments
-          subjectsData = JSON.parse(JSON.stringify(data.subjects));
-          assessmentsData = JSON.parse(JSON.stringify(data.assessments));
-          
-          // Re-render forms & update preview
-          renderSubjectsForm();
-          renderFormAssessments();
-          updateLivePreview();
-
-          // Switch tab to planner
-          document.querySelector('[data-tab="planner-tab"]').click();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+      // Merge standard static and user custom templates
+      const allTemplates = { ...templates };
+      customTemplates.forEach((ct, index) => {
+        allTemplates[`custom-${index}`] = ct;
       });
+
+      Object.keys(allTemplates).forEach(key => {
+        const data = allTemplates[key];
+        const isCustom = key.startsWith('custom-');
+        
+        const card = document.createElement('div');
+        card.className = `glass-card template-card ${data.subjects.length > 3 ? 'physics-cs' : 'science-math'}`;
+        if (data.subjects.length > 3) {
+          card.style.borderTopColor = 'var(--accent)';
+        }
+
+        // Build preview list
+        let pointsHtml = '';
+        if (data.seq) {
+          pointsHtml += `<li><strong>Pacing:</strong> ${data.seq.substring(0, 85)}${data.seq.length > 85 ? '...' : ''}</li>`;
+        }
+        data.subjects.forEach(sub => {
+          if (sub.obj) {
+            pointsHtml += `<li><strong>${sub.name}:</strong> ${sub.obj.substring(0, 85)}${sub.obj.length > 85 ? '...' : ''}</li>`;
+          }
+        });
+
+        card.innerHTML = `
+          <div class="template-meta">
+            <span class="badge ${isCustom ? 'badge-primary' : 'badge-secondary'}">${data.subjects.length} Subjects</span>
+            <span class="badge badge-accent">${data.grade}</span>
+            ${isCustom ? '<span class="badge badge-primary" style="background:var(--primary); color:#fff; text-shadow:none;">Saved Custom</span>' : ''}
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem; margin-bottom:0.5rem;">
+            <h3 style="font-size:1.15rem;">${data.title}</h3>
+            ${isCustom ? `<button class="btn btn-outline" style="padding:0.2rem 0.4rem; color:#ef4444; border-color:#fca5a5; font-size:0.7rem; border-radius:4px;" onclick="deleteCustomTemplate('${key}')">🗑️</button>` : ''}
+          </div>
+          <p style="font-size:0.8rem; line-height:1.4; margin-bottom:0.75rem;">${data.theme}</p>
+          
+          <div class="template-details" style="margin-top:auto;">
+            <strong>Horizontal Alignment Points:</strong>
+            <ul>
+              ${pointsHtml}
+            </ul>
+          </div>
+          
+          <button class="btn btn-primary load-template-btn" data-template-id="${key}" style="margin-top:0.75rem;">
+            Load & Edit Template
+          </button>
+        `;
+        templatesGrid.appendChild(card);
+      });
+
+      // Bind loader callbacks
+      const loadBtns = templatesGrid.querySelectorAll('.load-template-btn');
+      loadBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-template-id');
+          let data = templates[id];
+          if (!data && id.startsWith('custom-')) {
+            const index = parseInt(id.split('-')[1]);
+            data = customTemplates[index];
+          }
+          if (data) {
+            document.getElementById('project-title').value = data.title;
+            document.getElementById('grade-level').value = data.grade;
+            document.getElementById('project-duration').value = data.duration;
+            document.getElementById('project-theme').value = data.theme;
+            document.getElementById('sequence-adjustment').value = data.seq;
+
+            subjectsData = JSON.parse(JSON.stringify(data.subjects));
+            assessmentsData = JSON.parse(JSON.stringify(data.assessments));
+            
+            renderSubjectsForm();
+            renderFormAssessments();
+            updateLivePreview();
+
+            document.querySelector('[data-tab="planner-tab"]').click();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+      });
+    }
+
+    window.deleteCustomTemplate = function(key) {
+      if (confirm("Are you sure you want to delete this custom template?")) {
+        const index = parseInt(key.split('-')[1]);
+        let customTemplates = JSON.parse(localStorage.getItem('custom_templates')) || [];
+        customTemplates.splice(index, 1);
+        localStorage.setItem('custom_templates', JSON.stringify(customTemplates));
+        renderTemplatesTab();
+      }
+    };
+
+    // Save Template Callback
+    document.getElementById('save-template-btn').addEventListener('click', () => {
+      const title = document.getElementById('project-title').value.trim();
+      if (!title) {
+        alert("Please enter a Collaboration Project Title first!");
+        return;
+      }
+      
+      const newTemplate = {
+        title: title,
+        grade: document.getElementById('grade-level').value,
+        duration: parseInt(document.getElementById('project-duration').value) || 4,
+        theme: document.getElementById('project-theme').value,
+        seq: document.getElementById('sequence-adjustment').value,
+        subjects: JSON.parse(JSON.stringify(subjectsData)),
+        assessments: JSON.parse(JSON.stringify(assessmentsData))
+      };
+
+      let customTemplates = JSON.parse(localStorage.getItem('custom_templates')) || [];
+      const existIdx = customTemplates.findIndex(ct => ct.title.toLowerCase() === title.toLowerCase());
+      
+      if (existIdx !== -1) {
+        if (!confirm("A custom template with this title already exists. Do you want to overwrite it?")) {
+          return;
+        }
+        customTemplates[existIdx] = newTemplate;
+      } else {
+        customTemplates.push(newTemplate);
+      }
+
+      localStorage.setItem('custom_templates', JSON.stringify(customTemplates));
+      renderTemplatesTab();
+      alert(`Project "${title}" successfully saved as a custom model template!`);
     });
 
     // ========================================================================
@@ -2271,6 +2268,7 @@
       renderSubjectsForm();
       renderFormAssessments();
       updateLivePreview();
+      renderTemplatesTab();
     });
   </script>
 </body>
