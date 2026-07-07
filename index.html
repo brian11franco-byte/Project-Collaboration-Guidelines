@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Co-Align | Teacher Project Collaboration & Horizontal Alignment Guide</title>
+  
+  <meta name="description" content="An interactive tool and guide for teachers to prepare, plan, and document horizontal alignment for cross-curricular project collaborations.">
+  <meta name="keywords" content="horizontal alignment, project collaboration, lesson planning, teachers, cross-curricular, assessments">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & VARIABLES
+       ========================================================================== */
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #e0e7ff;
+      --primary-glow: rgba(79, 70, 229, 0.12);
+      
+      --secondary: #0d9488;
+      --secondary-hover: #0f766e;
+      --secondary-light: #ccfbf1;
+      --secondary-glow: rgba(13, 148, 136, 0.12);
+      
+      --accent: #d97706;
+      --accent-light: #fef3c7;
+      --accent-glow: rgba(217, 119, 6, 0.12);
+      
+      --bg-app: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      --border-color: #e2e8f0;
+      
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-inverse: #ffffff;
+      
+      --grad-primary: linear-gradient(135deg, #4f46e5 0%, #0d9488 100%);
+      --grad-accent: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
+      --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    [data-theme="dark"] {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: #1e1b4b;
+      --primary-glow: rgba(99, 102, 241, 0.2);
+      
+      --secondary: #14b8a6;
+      --secondary-hover: #0d9488;
+      --secondary-light: #115e59;
+      --secondary-glow: rgba(20, 184, 166, 0.2);
+      
+      --accent: #f59e0b;
+      --accent-light: #78350f;
+      --accent-glow: rgba(245, 158, 11, 0.2);
+      
+      --bg-app: #0f172a;
+      --bg-card: #1e293b;
+      --bg-input: #0f172a;
+      --border-color: #334155;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      
+      --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
+    }
+
+    /* Base Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: var(--transition-base);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* App Shell Layout */
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-container {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: var(--grad-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px var(--primary-glow);
+    }
+
+    .logo-container svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--text-inverse);
+      stroke-width: 2;
+    }
+
+    .brand h1 {
+      font-size: 1.4rem;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: var(--bg-app);
+      padding: 0.35rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      gap: 0.25rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: var(--transition-base);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .tab-btn.active {
+      background: var(--bg-card);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 0.6rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-base);
+      color: var(--text-main);
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
+    }
+
+    /* Container Structure */
+    main {
+      flex-grow: 1;
+      padding: 2.5rem;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .tab-panel {
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .section-title {
+      font-size: 1.85rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 800px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      transition: var(--transition-base);
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--text-inverse);
+      box-shadow: 0 4px 10px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px var(--primary-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .badge-primary { background: var(--primary-light); color: var(--primary); }
+    .badge-secondary { background: var(--secondary-light); color: var(--secondary); }
+    .badge-accent { background: var(--accent-light); color: var(--accent); }
+
+    /* Cards */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .glass-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ==========================================================================
+       TAB 1: ALIGNMENT GUIDE & INTERACTIVE FLOWCHART
+       ========================================================================== */
+    .guide-intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 3.5rem;
+      align-items: center;
+    }
+
+    .intro-text-column h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .intro-text-column p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Workflow Flowchart styling */
+    .workflow-flowchart {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin: 3.5rem 0;
+      position: relative;
+    }
+
+    .workflow-flowchart::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: var(--border-color);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .workflow-step {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .workflow-step:hover {
+      transform: translateY(-6px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md), 0 0 15px var(--primary-glow);
+    }
+
+    .workflow-step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .workflow-step-icon {
+      font-size: 2.2rem;
+      margin: 0.25rem 0;
+    }
+
+    .workflow-step h3 {
+      font-size: 1.2rem;
+    }
+
+    .workflow-step p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Workflow Zoom Overlay Modal */
+    .workflow-zoom-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.25);
+      backdrop-filter: blur(12px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .workflow-zoom-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .zoom-content-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .workflow-zoom-overlay.active .zoom-content-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .close-zoom-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+
+    .close-zoom-btn:hover {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: transparent;
+      transform: rotate(90deg);
+    }
+
+    .zoom-body-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Student Advantage styling */
+    .student-advantage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 3.5rem 0;
+    }
+
+    .advantage-card {
+      border-top: 4px solid var(--primary);
+    }
+
+    .advantage-card.sec-border {
+      border-top-color: var(--secondary);
+    }
+
+    .advantage-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .advantage-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Checklist & Pedagogical FAQ */
+    .two-column-block {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 3rem;
+      margin-top: 3.5rem;
+    }
+
+    .checklist-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: 1.25rem;
+    }
+
+    .checklist-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .checklist-checkbox {
+      margin-top: 0.2rem;
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .faq-question {
+      padding: 1rem;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .faq-answer {
+      padding: 0 1rem 1rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    .faq-item.active .faq-question {
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       TAB 2: COLLABORATION PLANNER (Split Form & Preview Layout)
+       ========================================================================== */
+    .planner-container {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .planner-form-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .form-section-title {
+      font-size: 1.2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-input);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: var(--transition-base);
+    }
+
+    .form-group input:focus, 
+    .form-group select:focus, 
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    /* Assessment Items Editor */
+    .assessment-item-card {
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #ef4444;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* Document A4 Preview Panel */
+    .planner-preview-panel {
+      position: sticky;
+      top: 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .preview-actions-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    .a4-preview-wrapper {
+      background: #475569;
+      padding: 2.5rem 1.5rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    .a4-document {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      color: #000000;
+      padding: 20mm;
+      font-family: 'Calibri', 'Arial', sans-serif;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* Standard A4 alignment document styles */
+    .a4-header {
+      text-align: center;
+      border-bottom: 3px double #000000;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .a4-header h1 {
+      font-size: 18pt;
+      color: #000000;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+    }
+
+    .a4-header h2 {
+      font-size: 12pt;
+      color: #334155;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .a4-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    .a4-meta-table td {
+      border: 1px solid #000000;
+      padding: 0.5rem;
+      font-size: 10pt;
+      vertical-align: top;
+    }
+
+    .a4-section-title {
+      font-size: 11pt;
+      font-weight: 700;
+      border-bottom: 1px solid #000000;
+      padding-bottom: 0.2rem;
+      margin: 1.5rem 0 0.75rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .a4-objectives-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .a4-obj-box {
+      font-size: 9.5pt;
+      line-height: 1.5;
+    }
+
+    .a4-obj-box strong {
+      font-size: 10pt;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .a4-timeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+
+    .a4-timeline-table th, 
+    .a4-timeline-table td {
+      border: 1px solid #000000;
+      padding: 0.6rem;
+      font-size: 9.5pt;
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    .a4-timeline-table th {
+      background-color: #f1f5f9;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    /* ==========================================================================
+       TAB 3: MODEL TEMPLATES
+       ========================================================================== */
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .template-card {
+      border-top: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .template-card.science-math {
+      border-top-color: var(--secondary);
+    }
+
+    .template-card.physics-cs {
+      border-top-color: var(--accent);
+    }
+
+    .template-meta {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .template-card h3 {
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+    }
+
+    .template-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .template-details {
+      font-size: 0.85rem;
+      background: var(--bg-app);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-top: auto;
+    }
+
+    .template-details strong {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .template-details ul {
+      padding-left: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .template-card .btn {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    /* ==========================================================================
+       TAB 4: ASSESSMENT DESIGN VISUALIZER
+       ========================================================================== */
+    .viz-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .viz-week-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .viz-week-row::after {
+      content: '';
+      position: absolute;
+      left: 120px;
+      right: 0;
+      bottom: -1rem;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    .viz-week-row:last-child::after {
+      display: none;
+    }
+
+    .viz-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    .viz-track {
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      position: relative;
+    }
+
+    .viz-track.t1 {
+      border-left: 4px solid var(--primary);
+    }
+
+    .viz-track.t2 {
+      border-left: 4px solid var(--secondary);
+    }
+
+    .viz-track h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .viz-track p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .sync-indicator {
+      position: absolute;
+      top: -0.5rem;
+      right: 1rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.15rem 0.5rem;
+      border-radius: 50px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Print Styles overrides */
+    @media print {
+      body {
+        background-color: #ffffff;
+      }
+      header, main > *:not(#planner-tab), .planner-form-panel, .preview-actions-bar, .a4-preview-wrapper {
+        display: none !important;
+      }
+      main {
+        padding: 0;
+      }
+      .planner-container {
+        display: block;
+      }
+      .planner-preview-panel {
+        position: relative;
+        top: 0;
+      }
+      .a4-document {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .planner-container {
+        grid-template-columns: 1fr;
+      }
+      .planner-preview-panel {
+        position: relative;
+        top: 0;
+      }
+      .guide-intro-grid {
+        grid-template-columns: 1fr;
+      }
+      .workflow-flowchart {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .workflow-flowchart::after {
+        display: none;
+      }
+      .zoom-body-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Visual Overlap Venn Diagram Styles */
+    .visual-overlap-graph {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 180px;
+      margin: 1.25rem 0;
+    }
+
+    .v-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      opacity: 0.85;
+      box-shadow: var(--shadow-sm);
+      line-height: 1.35;
+      padding: 1.25rem;
+      transition: var(--transition-base);
+    }
+
+    .v-circle.c1 {
+      background: var(--primary-glow);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      margin-right: -28px;
+    }
+
+    .v-circle.c2 {
+      background: var(--secondary-glow);
+      color: var(--secondary);
+      border: 2px solid var(--secondary);
+      margin-left: -28px;
+    }
+
+    .v-overlap-text {
+      position: absolute;
+      z-index: 10;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      padding: 0.5rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="logo-container">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1>Co-Align</h1>
+      </div>
+      
+      <!-- Navigation Tabs -->
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="guide-tab">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Alignment Guide
+        </button>
+        <button class="tab-btn" data-tab="planner-tab">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Collaboration Planner
+        </button>
+        <button class="tab-btn" data-tab="templates-tab">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Model Templates
+        </button>
+        <button class="tab-btn" data-tab="visualizer-tab">
+          <svg viewBox="0 0 24 24"><path d="M3 3v18h18M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Assessment Design
+        </button>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="theme-toggle" title="Toggle Theme">
+          <svg id="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+          <svg id="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+      
+      <!-- ====================================================================
+           TAB 1: ALIGNMENT GUIDE
+           ==================================================================== -->
+      <section id="guide-tab" class="tab-panel">
+        
+        <div class="guide-intro-grid">
+          <div class="intro-text-column">
+            <span class="badge badge-primary">Methodology</span>
+            <h2 style="margin-top: 0.5rem;">The Concept of Horizontal Alignment</h2>
+            <p>Horizontal alignment is the deliberate coordination of curriculum standards, themes, and assessments across different subjects during the same teaching cycle. Rather than learning subjects in isolation, students experience a unified, connected pathway that highlights real-world relationships.</p>
+            <p>By synchronizing lesson pacing, teachers ensure that prerequisite skills in one subject (e.g. money calculation in Math) are taught exactly when they are needed for application in another (e.g. purchasing raw prototyping goods in Science).</p>
+          </div>
+          
+          <div class="glass-card advantage-card" style="border-top: 4px solid var(--secondary);">
+            <h3>Pedagogical Benefits</h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; font-size: 0.9rem;">
+              <div>
+                <strong>💡 High Cognitive Transfer</strong>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Students see immediate connections between theories (e.g., studying electrical circuit components in Science and building architectural models in Design).</p>
+              </div>
+              <div>
+                <strong>📉 Student Workload Reduction</strong>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Instead of submitting separate projects for different classes, students design a single interdisciplinary project evaluated across multiple distinct subject rubrics.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="text-align: center; font-size: 1.6rem; letter-spacing: -0.5px; font-family: 'Outfit';">
+          Interactive Horizontal Alignment Journey
+        </h2>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Click on any phase below to zoom in on specific preparation steps, checklists, and classroom tips.
+        </p>
+
+        <!-- Zooming Flowchart -->
+        <div class="workflow-flowchart">
+          <!-- Step 1 -->
+          <div class="workflow-step" data-step="1">
+            <div class="workflow-step-num">01</div>
+            <div class="workflow-step-icon">🔍</div>
+            <h3>Discover & Map</h3>
+            <p>Compare curriculum calendars to locate conceptual overlaps and thematic intersections.</p>
+          </div>
+          
+          <!-- Step 2 -->
+          <div class="workflow-step" data-step="2">
+            <div class="workflow-step-num">02</div>
+            <div class="workflow-step-icon">⚙️</div>
+            <h3>Sequence & Adjust</h3>
+            <p>Reorder units and lesson schedules to align prerequisite knowledge and skills.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="workflow-step" data-step="3">
+            <div class="workflow-step-num">03</div>
+            <div class="workflow-step-icon">🤝</div>
+            <h3>Co-design Assessments</h3>
+            <p>Sync week-by-week formative checkpoints and compile a joint final practical test.</p>
+          </div>
+        </div>
+
+        <!-- Student Advantage Section -->
+        <div class="student-advantage-grid">
+          <div class="glass-card advantage-card">
+            <h3><span>🤝</span> Subject Connections</h3>
+            <p>In traditional schedules, students study topics in isolated bubbles, making it difficult to understand practical applications. Horizontal alignment solves this by establishing cross-cutting themes (like "The Shopping Center" or "Light and Shadows"). The classroom becomes a dynamic learning lab where theoretical science questions are resolved using math coordinates and ELA descriptive vocabulary in real-time.</p>
+          </div>
+          <div class="glass-card advantage-card sec-border">
+            <h3><span>📉</span> Student Workload Decrease</h3>
+            <p>One of the most immediate benefits of horizontal alignment is the reduction of assessment stress. By aligning curriculum maps, teachers replace separate end-of-term exams with a single, high-fidelity interdisciplinary project. Graded independently on subject-specific criteria, this combined requirement eliminates redundant work and allows students to focus their efforts on producing high-quality work.</p>
+          </div>
+        </div>
+
+        <!-- Checklist & FAQ row -->
+        <div class="two-column-block">
+          <div class="glass-card">
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Collaboration Readiness Checklist</h3>
+            <p class="section-subtitle" style="font-size: 0.85rem;">Verify if your collaborative unit is ready for classroom execution:</p>
+            <ul class="checklist-list">
+              <li>
+                <input type="checkbox" class="checklist-checkbox">
+                <span>Both calendars have been cross-referenced for common terms.</span>
+              </li>
+              <li>
+                <input type="checkbox" class="checklist-checkbox">
+                <span>The connecting theme accommodates objectives from both curricula without sacrificing standard rigor.</span>
+              </li>
+              <li>
+                <input type="checkbox" class="checklist-checkbox">
+                <span>Math/analytical prerequisites are scheduled at least 1 week before application.</span>
+              </li>
+              <li>
+                <input type="checkbox" class="checklist-checkbox">
+                <span>A shared rubric has been defined with separate grading keys for each subject.</span>
+              </li>
+              <li>
+                <input type="checkbox" class="checklist-checkbox">
+                <span>We scheduled a weekly 15-minute sync to check student pace.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;">Pedagogical FAQ</h3>
+            <div class="faq-accordion">
+              <div class="faq-item">
+                <button class="faq-question">What if a teacher falls behind schedule? <span>+</span></button>
+                <div class="faq-answer">Use the weekly formative check-ins to monitor pace. If one subject experiences a delay, the collaborative project's assembly phase can be extended, or the other subject can introduce reinforcing exercises to bridge the gap.</div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-question">How do we grade joint projects? <span>+</span></button>
+                <div class="faq-answer">Students submit one project, but receive separate grades. The Science teacher grades for scientific inquiry/circuitry accuracy, the ELA teacher grades for descriptive vocabulary/speech delivery, and the Math teacher grades for metric word problems. Each uses their own rubric criteria.</div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-question">Does this require restructuring our entire school year? <span>+</span></button>
+                <div class="faq-answer">No. Start small. Align just one 3-4 week block or a single final practical assessment per term. Once scheduling alignments prove successful, you can scale to longer units.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           TAB 2: COLLABORATION PLANNER
+           ==================================================================== -->
+      <section id="planner-tab" class="tab-panel" style="display: none;">
+        
+        <div class="planner-container">
+          
+          <!-- Left: Input Form Panel -->
+          <div class="planner-form-panel">
+            
+            <!-- Section 1: Project Metadata -->
+            <div class="glass-card">
+              <h3 class="form-section-title">1. Project Overview</h3>
+              
+              <div class="form-group">
+                <label for="project-title">Collaboration Project Title</label>
+                <input type="text" id="project-title" value="Body Puppet Intro Project" placeholder="e.g., Smart Cities, Propaganda in History">
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="grade-level">Target Grade Level</label>
+                  <input type="text" id="grade-level" value="Primary X (1st Sem)" placeholder="e.g., Grade 8, Year 10">
+                </div>
+                <div class="form-group">
+                  <label for="project-duration">Duration (Weeks)</label>
+                  <input type="number" id="project-duration" value="4" min="1" max="12">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="project-theme">Connecting Theme / Core Concept</label>
+                <input type="text" id="project-theme" value="Introduction and Body Parts (S.Y. 2025-2026)" placeholder="e.g., How statistical representations drive community advocacy">
+              </div>
+            </div>
+
+            <!-- Section 2: Subject Alignments -->
+            <div class="glass-card">
+              <h3 class="form-section-title">2. Subject Customizations</h3>
+              
+              <div class="form-row-2" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                <!-- Subject 1 -->
+                <div>
+                  <h4 style="font-size: 0.95rem; color: var(--secondary); margin-bottom: 1rem;">Subject A (Anchor)</h4>
+                  <div class="form-group">
+                    <label for="sub1-name">Subject Name</label>
+                    <input type="text" id="sub1-name" value="Science">
+                  </div>
+                  <div class="form-group">
+                    <label for="sub1-teacher">Teacher Name(s)</label>
+                    <input type="text" id="sub1-teacher" value="Primary X Science Teacher">
+                  </div>
+                  <div class="form-group">
+                    <label for="sub1-obj">Learning Objective</label>
+                    <textarea id="sub1-obj" rows="4">(1) Name at least 8 major external body parts with 100% accuracy. (2) Identify the correct location of body parts by assembling a paper puppet. (3) Describe the primary functions (e.g. We use our eyes to see, legs to walk). (4) Explain how body parts make daily life easier.</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="sub1-prereq">Prerequisite Knowledge/Skills</label>
+                    <input type="text" id="sub1-prereq" value="Basic visual identification of body parts.">
+                  </div>
+                </div>
+
+                <!-- Subject 2 -->
+                <div>
+                  <h4 style="font-size: 0.95rem; color: var(--primary); margin-bottom: 1rem;">Subject B (Collaborator)</h4>
+                  <div class="form-group">
+                    <label for="sub2-name">Subject Name</label>
+                    <input type="text" id="sub2-name" value="Language (English & BI)">
+                  </div>
+                  <div class="form-group">
+                    <label for="sub2-teacher">Teacher Name(s)</label>
+                    <input type="text" id="sub2-teacher" value="Primary X Language Teacher">
+                  </div>
+                  <div class="form-group">
+                    <label for="sub2-obj">Learning Objective</label>
+                    <textarea id="sub2-obj" rows="4">Bahasa: Siswa dapat menyebutkan identitas diri (nama, umur, tanggal lahir, alamat, hobi) secara benar dan lengkap. English: Introduce themselves confidently in front of the class.</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="sub2-prereq">Prerequisite Knowledge/Skills</label>
+                    <input type="text" id="sub2-prereq" value="Basic spelling and sentence writing in English and Bahasa Indonesia.">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sequence Adjustment -->
+              <div class="form-group">
+                <label for="sequence-adjustment">Sequence / Schedule Adjustment Description</label>
+                <textarea id="sequence-adjustment" rows="3">Language teachers (English & Bahasa) coordinate self-introduction speech templates during Weeks 1 and 2, which run parallel to the Science body parts naming lectures. In Week 3, students apply these by presenting their puppets in front of the class.</textarea>
+              </div>
+            </div>
+
+            <!-- Section 3: Assessment Milestones -->
+            <div class="glass-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                <h3 class="form-section-title" style="margin-bottom: 0; border: none; padding: 0;">3. Alignment Assessments Table</h3>
+                <button type="button" class="btn btn-outline" id="add-assessment-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">+ Add Week</button>
+              </div>
+              
+              <div id="assessments-container">
+                <!-- Dynamic cards populated here -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Document A4 Live Preview -->
+          <div class="planner-preview-panel">
+            <div class="preview-actions-bar">
+              <button class="btn btn-outline" id="copy-markdown-btn">
+                <span>📋</span> Copy Markdown
+              </button>
+              <button class="btn btn-primary" id="print-btn">
+                <span>🖨️</span> Print Alignment File
+              </button>
+            </div>
+
+            <div class="a4-preview-wrapper">
+              <div class="a4-document" id="a4-doc">
+                
+                <div class="a4-header">
+                  <h1 id="preview-school">IPH SCHOOLS EAST</h1>
+                  <h2>HORIZONTAL ALIGNMENT FILE</h2>
+                  <p style="font-size: 9.5pt; color: #555;" id="preview-grade-header">Grade Level: Primary X (1st Sem) | S.Y. 2025-2026</p>
+                </div>
+
+                <table class="a4-meta-table">
+                  <tr>
+                    <td style="width: 20%;"><strong>Project Name:</strong></td>
+                    <td id="preview-title" style="width: 30%;">Body Puppet Intro Project</td>
+                    <td style="width: 20%;"><strong>Duration:</strong></td>
+                    <td id="preview-duration" style="width: 30%;">4 Weeks</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Theme:</strong></td>
+                    <td id="preview-theme" colspan="3">Introduction and Body Parts (S.Y. 2025-2026)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pacing Shift:</strong></td>
+                    <td id="preview-sequence" colspan="3">Language teachers (English & Bahasa) coordinate self-introduction speech templates during Weeks 1 and 2, which run parallel to the Science body parts naming lectures. In Week 3, students apply these by presenting their puppets in front of the class.</td>
+                  </tr>
+                </table>
+
+                <div class="a4-section-title">Cross-Curricular Learning Objectives & Prerequisites</div>
+                <div class="a4-objectives-grid">
+                  <div class="a4-obj-box" style="border-right: 1px solid #ddd; padding-right: 1rem;">
+                    <strong>Subject A: <span id="preview-sub1-header">Science</span></strong>
+                    <p style="margin-bottom: 0.5rem;"><em>Teacher:</em> <span id="preview-sub1-teacher">Primary X Science Teacher</span></p>
+                    <p><em>Objective:</em> <span id="preview-sub1-obj">Name at least 8 major external body parts...</span></p>
+                    <p style="margin-top: 0.5rem; font-size: 8.5pt;"><strong>Prerequisites:</strong> <span id="preview-sub1-prereq">Basic visual identification of body parts.</span></p>
+                  </div>
+                  <div class="a4-obj-box">
+                    <strong>Subject B: <span id="preview-sub2-header">Language (English & BI)</span></strong>
+                    <p style="margin-bottom: 0.5rem;"><em>Teacher:</em> <span id="preview-sub2-teacher">Primary X Language Teacher</span></p>
+                    <p><em>Objective:</em> <span id="preview-sub2-obj">Bahasa: Siswa dapat menyebutkan identitas diri...</span></p>
+                    <p style="margin-top: 0.5rem; font-size: 8.5pt;"><strong>Prerequisites:</strong> <span id="preview-sub2-prereq">Basic spelling and sentence writing...</span></p>
+                  </div>
+                </div>
+
+                <div class="a4-section-title">Coordinated Weekly Assessment Timeline</div>
+                <table class="a4-timeline-table" id="preview-timeline-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 15%;">When</th>
+                      <th style="width: 20%;">Phase / Type</th>
+                      <th>Subject A Assessments</th>
+                      <th>Subject B Assessments</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           TAB 3: MODEL TEMPLATES
+           ==================================================================== -->
+      <section id="templates-tab" class="tab-panel" style="display: none;">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Horizontal Alignment Templates</h1>
+            <p class="section-subtitle">Select a pre-designed, aligned curriculum blueprint below. You can load it instantly into the planner to customize it.</p>
+          </div>
+        </div>
+
+        <div class="templates-grid">
+          
+          <!-- Template 1: Body Puppet Intro Project -->
+          <div class="glass-card template-card science-math">
+            <div class="template-meta">
+              <span class="badge badge-secondary">Science + English + BI</span>
+              <span class="badge badge-accent">Primary X (1st Sem)</span>
+            </div>
+            <h3>Body Puppet Intro Project</h3>
+            <p>Students learn body part names and locations in Science, construct a paper body puppet to build fine motor skills, and introduce themselves using new vocabulary in English and Bahasa Indonesia.</p>
+            
+            <div class="template-details">
+              <strong>Horizontal Alignment Points:</strong>
+              <ul>
+                <li>Science guides the physical puppet creation and biological naming of parts.</li>
+                <li>Bahasa Indonesia and English coordinate self-introduction parameters (name, age, hobi).</li>
+                <li>Final Practical Assessment: Introducing self to the class using the constructed paper puppet as a visual aid.</li>
+              </ul>
+            </div>
+            
+            <button class="btn btn-primary load-template-btn" data-template-id="template-1">
+              Load & Edit Template
+            </button>
+          </div>
+
+          <!-- Template 2: Miniature Stage Drama Project -->
+          <div class="glass-card template-card science-math">
+            <div class="template-meta">
+              <span class="badge badge-secondary">Science + English + BI + RS</span>
+              <span class="badge badge-accent">Primary X (1st Sem Final)</span>
+            </div>
+            <h3>Miniature Stage Drama</h3>
+            <p>Students build a miniature physical theater stage using recycled materials in Science, and write and perform a script based on a historical/religious narrative in English, Bahasa, and Religious Studies.</p>
+            
+            <div class="template-details">
+              <strong>Horizontal Alignment Points:</strong>
+              <ul>
+                <li>Science teaches properties of recycled materials to build a durable stage and props.</li>
+                <li>English and Bahasa coordinate procedure writing and narrative monologue movements.</li>
+                <li>RS provides script materials based on historical stories (e.g. Joshua and Caleb).</li>
+              </ul>
+            </div>
+            
+            <button class="btn btn-primary load-template-btn" data-template-id="template-2">
+              Load & Edit Template
+            </button>
+          </div>
+
+          <!-- Template 3: Water Games Day & Buoyancy -->
+          <div class="glass-card template-card physics-cs" style="border-top-color: var(--accent);">
+            <div class="template-meta">
+              <span class="badge badge-accent">Science + Math + PE + Music</span>
+              <span class="badge badge-accent">Primary X (2nd Sem Final)</span>
+            </div>
+            <h3>Water Games Day & Buoyancy</h3>
+            <p>A full-day interactive sports and science event. Students perform time-reading on clock faces, test floatation devices in Science, play obstacle games in PE, and tap rhythm beats in Music.</p>
+            
+            <div class="template-details">
+              <strong>Horizontal Alignment Points:</strong>
+              <ul>
+                <li>Math teaches analog reading (o'clock clock product) used to verify timers in PE.</li>
+                <li>Science covers floating, sinking, and building a simple floating device.</li>
+                <li>Music and PE coordinate body percussion beats and physical gross motor movements.</li>
+              </ul>
+            </div>
+            
+            <button class="btn btn-primary load-template-btn" data-template-id="template-3">
+              Load & Edit Template
+            </button>
+          </div>
+
+          <!-- Template 4: My Book of Light -->
+          <div class="glass-card template-card science-math">
+            <div class="template-meta">
+              <span class="badge badge-secondary">Science + English + Math + Arts</span>
+              <span class="badge badge-accent">Primary 3 (1st Sem Final)</span>
+            </div>
+            <h3>My Book of Light</h3>
+            <p>A collaborative storybook final project. Students study light and shadow properties in Science, draft creative narratives in ELA, build coordinates word problems in Math, and sculpt 3D shadow models in Art.</p>
+            
+            <div class="template-details">
+              <strong>Horizontal Alignment Points:</strong>
+              <ul>
+                <li>Science conducts light source experimentations; ELA applies descriptive adjectives to narrative settings.</li>
+                <li>Math designs algebraic word problems built on story elements.</li>
+                <li>Arts sculpts clay landmarks that act as shadows on the book pages.</li>
+              </ul>
+            </div>
+            
+            <button class="btn btn-primary load-template-btn" data-template-id="template-4">
+              Load & Edit Template
+            </button>
+          </div>
+
+          <!-- Template 5: Shopping Center -->
+          <div class="glass-card template-card physics-cs" style="border-top-color: var(--accent);">
+            <div class="template-meta">
+              <span class="badge badge-accent">All Subjects (Math/Science/CL)</span>
+              <span class="badge badge-accent">Primary 2 (2nd Sem Final)</span>
+            </div>
+            <h3>Shopping Center</h3>
+            <p>A miniature town center construction project. Students design a new electrical appliance blueprint in Science, handle money transactions in Math, map city spaces in English, and execute buying dialogues in Chinese.</p>
+            
+            <div class="template-details">
+              <strong>Horizontal Alignment Points:</strong>
+              <ul>
+                <li>Math teaches money and calculations exactly when students buy prototype supplies.</li>
+                <li>Science builds simple electrical circuit loops inside clay/carton structures.</li>
+                <li>Languages structure buying dialogues (CL) and job/location cards (BI/English).</li>
+              </ul>
+            </div>
+            
+            <button class="btn btn-primary load-template-btn" data-template-id="template-5">
+              Load & Edit Template
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 4: ASSESSMENT DESIGN VISUALIZER
+           ==================================================================== -->
+      <section id="visualizer-tab" class="tab-panel" style="display: none;">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Assessment Design Visualizer</h1>
+            <p class="section-subtitle">Monitor how subjects parallel and reinforce each other week by week. This timeline ensures coordinated pacing.</p>
+          </div>
+        </div>
+
+        <div class="glass-card" style="padding: 2.5rem;">
+          <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; text-align: center;">Week-by-Week Parallel Alignment Matrix</h3>
+          
+          <div class="viz-timeline" id="viz-timeline-container">
+            <!-- Dynamic viz tracks populated here -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Zooming Flowchart Modal Overlay -->
+  <div class="workflow-zoom-overlay" id="workflow-overlay">
+    <div class="zoom-content-card">
+      <button class="close-zoom-btn" id="close-zoom-btn">&times;</button>
+      <span class="badge badge-primary" id="zoom-badge">Phase 01</span>
+      <h2 id="zoom-title" style="font-size: 1.6rem; margin-top: 0.5rem; margin-bottom: 1rem;">Title</h2>
+      
+      <div class="zoom-body-grid">
+        <div id="zoom-desc" style="font-size: 0.95rem; line-height: 1.6; color: var(--text-main);">
+          <!-- Description text -->
+        </div>
+        <div id="zoom-visual" style="background: var(--bg-app); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; min-height: 200px;">
+          <!-- Visual diagram -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript Logic -->
+  <script>
+    // ========================================================================
+    // TAB NAVIGATION CONTROLS
+    // ========================================================================
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Toggle tab buttons
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Show active panel
+        const targetPanel = tab.getAttribute('data-tab');
+        panels.forEach(panel => {
+          if (panel.id === targetPanel) {
+            panel.style.display = 'block';
+          } else {
+            panel.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // ========================================================================
+    // THEME STATE LOGIC
+    // ========================================================================
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    const htmlElement = document.documentElement;
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      if (currentTheme === 'light') {
+        htmlElement.setAttribute('data-theme', 'dark');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-theme', 'light');
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    });
+
+    // ========================================================================
+    // PEDAGOGICAL FAQ ACCORDION
+    // ========================================================================
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Close all items
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('active');
+          i.querySelector('.faq-question span').textContent = '+';
+        });
+
+        if (!isActive) {
+          item.classList.add('active');
+          btn.querySelector('span').textContent = '-';
+        }
+      });
+    });
+
+    // ========================================================================
+    // INTERACTIVE FLOWCHART ZOOM LOGIC
+    // ========================================================================
+    const flowSteps = document.querySelectorAll('.workflow-step');
+    const zoomOverlay = document.getElementById('workflow-overlay');
+    const closeZoomBtn = document.getElementById('close-zoom-btn');
+    const zoomBadge = document.getElementById('zoom-badge');
+    const zoomTitle = document.getElementById('zoom-title');
+    const zoomDesc = document.getElementById('zoom-desc');
+    const zoomVisual = document.getElementById('zoom-visual');
+
+    const flowchartData = {
+      '1': {
+        badge: 'Phase 01: Discover & Map',
+        title: 'Curriculum Overlaps & Theme Discovery',
+        desc: `
+          <p style="margin-bottom: 0.75rem;"><strong>Step 1: Inspect Subject Timelines</strong><br>Check topic grids of both subjects. Find areas with concurrent execution schedules.</p>
+          <p style="margin-bottom: 0.75rem;"><strong>Step 2: Core Concept Bridging</strong><br>Extract shared themes (e.g. Light & Shadow properties in Science combined with Narrative Storytelling in English).</p>
+          <p><strong>Step 3: Essential Questions</strong><br>Formulate overarching queries driving both classes (e.g. "How can we tell a story using light and shadows?").</p>
+        `,
+        visual: `
+          <div class="visual-overlap-graph">
+            <div class="v-circle c1">Subject A<br>(Theory)</div>
+            <div class="v-circle c2">Subject B<br>(Practice)</div>
+            <div class="v-overlap-text">Theme Overlap</div>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; font-style:italic; margin-top:0.5rem;">"Locate standards intersection points."</p>
+        `
+      },
+      '2': {
+        badge: 'Phase 02: Sequence & Adjust',
+        title: 'Lesson Pacing & Prerequisite Shifts',
+        desc: `
+          <p style="margin-bottom: 0.75rem;"><strong>Step 1: Identify Prerequisite Blocks</strong><br>Pinpoint the baseline skills students need in class A before constructing items in class B (e.g., money exchange calculation must precede shop supply purchasing).</p>
+          <p style="margin-bottom: 0.75rem;"><strong>Step 2: Re-adjust Calendars</strong><br>Reschedule Lesson pacing. Shift Subject A's unit forward by 1-2 weeks so baseline knowledge is unlocked exactly in time for Subject B's lab.</p>
+          <p><strong>Step 3: Coordinated Chronology</strong><br>Sync weekly timelines to reinforce classroom concepts simultaneously.</p>
+        `,
+        visual: `
+          <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.8rem; padding: 0.5rem;">
+            <div style="background:var(--border-color); padding:0.4rem; border-radius:6px; text-decoration:line-through; opacity:0.6;">Math Money: Week 8 (Out of sync)</div>
+            <div style="background:var(--primary-light); color:var(--primary); padding:0.4rem; border-radius:6px; border-left:3px solid var(--primary); font-weight:bold;">Math Money: Week 2 (Prerequisite Shifted)</div>
+            <div style="background:var(--secondary-light); color:var(--secondary); padding:0.4rem; border-radius:6px; border-left:3px solid var(--secondary); font-weight:bold;">Science Prototyping: Week 2 (Coaligned)</div>
+          </div>
+        `
+      },
+      '3': {
+        badge: 'Phase 03: Co-design Assessments',
+        title: 'Synergized Assessment Design',
+        desc: `
+          <p style="margin-bottom: 0.75rem;"><strong>Step 1: Formative Checkpoints</strong><br>Weekly synchronized checklists evaluating individual subject elements in progress.</p>
+          <p style="margin-bottom: 0.75rem;"><strong>Step 2: Summative Milestones</strong><br>Consolidate requirements. Grade a single major milestone prototype draft for both science structure and English manual guides.</p>
+          <p><strong>Step 3: Consolidated Final Practical</strong><br>Students deliver a single culminating showcase event (e.g., the Shopping Center) evaluated on a coordinated dual-subject rubric, decreasing stress.</p>
+        `,
+        visual: `
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; font-size:0.75rem;">
+            <div style="background:var(--border-color); padding:0.5rem; border-radius:6px; text-align:center;">
+              <strong>Silo Route:</strong><br>
+              3 exams<br>
+              3 files<br>
+              <span style="color:#ef4444; font-weight:bold;">High Load</span>
+            </div>
+            <div style="background:var(--secondary-light); color:var(--secondary); padding:0.5rem; border-radius:6px; text-align:center; border: 1px solid var(--secondary);">
+              <strong>Aligned Route:</strong><br>
+              1 combined project<br>
+              2 evaluations<br>
+              <span style="color:#10b981; font-weight:bold;">Optimized</span>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    flowSteps.forEach(step => {
+      step.addEventListener('click', () => {
+        const stepNum = step.getAttribute('data-step');
+        const data = flowchartData[stepNum];
+        if (data) {
+          zoomBadge.textContent = data.badge;
+          zoomTitle.textContent = data.title;
+          zoomDesc.innerHTML = data.desc;
+          zoomVisual.innerHTML = data.visual;
+          zoomOverlay.classList.add('active');
+        }
+      });
+    });
+
+    closeZoomBtn.addEventListener('click', () => {
+      zoomOverlay.classList.remove('active');
+    });
+
+    zoomOverlay.addEventListener('click', (e) => {
+      if (e.target === zoomOverlay) {
+        zoomOverlay.classList.remove('active');
+      }
+    });
+
+    // ========================================================================
+    // COLLABORATION PLANNER FORM LOGIC
+    // ========================================================================
+    const plannerFields = [
+      { id: 'project-title', previewId: 'preview-title' },
+      { id: 'grade-level', previewId: 'preview-grade-header', formatter: val => `Grade Level: ${val} | S.Y. 2025-2026` },
+      { id: 'project-duration', previewId: 'preview-duration', formatter: val => `${val} Weeks` },
+      { id: 'project-theme', previewId: 'preview-theme' },
+      { id: 'sub1-name', previewId: 'preview-sub1-header' },
+      { id: 'sub1-teacher', previewId: 'preview-sub1-teacher' },
+      { id: 'sub1-obj', previewId: 'preview-sub1-obj' },
+      { id: 'sub1-prereq', previewId: 'preview-sub1-prereq' },
+      { id: 'sub2-name', previewId: 'preview-sub2-header' },
+      { id: 'sub2-teacher', previewId: 'preview-sub2-teacher' },
+      { id: 'sub2-obj', previewId: 'preview-sub2-obj' },
+      { id: 'sub2-prereq', previewId: 'preview-sub2-prereq' },
+      { id: 'sequence-adjustment', previewId: 'preview-sequence' }
+    ];
+
+    function updateLivePreview() {
+      plannerFields.forEach(field => {
+        const inputEl = document.getElementById(field.id);
+        const previewEl = document.getElementById(field.previewId);
+        if (inputEl && previewEl) {
+          previewEl.textContent = field.formatter ? field.formatter(inputEl.value) : inputEl.value;
+        }
+      });
+      
+      const sub1Header = document.getElementById('preview-sub1-header');
+      const sub2Header = document.getElementById('preview-sub2-header');
+      if (sub1Header) sub1Header.textContent = document.getElementById('sub1-name').value;
+      if (sub2Header) sub2Header.textContent = document.getElementById('sub2-name').value;
+
+      syncAssessmentTable();
+      renderVisualizer();
+    }
+
+    plannerFields.forEach(field => {
+      const inputEl = document.getElementById(field.id);
+      if (inputEl) {
+        inputEl.addEventListener('input', updateLivePreview);
+      }
+    });
+
+    // ========================================================================
+    // ASSESSMENT LIST DATA & TABLE EDITING
+    // ========================================================================
+    let assessmentsData = [
+      { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Diagnostic quiz naming body parts (head, arms, legs).', sub2: 'BI: Writing personal identities (name, age, hobi) on notebook.' },
+      { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Identify body part locations by assembling paper puppet parts.', sub2: 'English: Introduce name and age in small groups.' },
+      { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Describe primary functions of at least five major body parts.', sub2: 'BI: Introduce self in front of class using written scripts.' },
+      { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Puppet construction check (Criteria: Naming, describing, effort).', sub2: 'English & BI: Self-introduction speech presenting the puppet as a visual aid.' }
+    ];
+
+    const assessmentsContainer = document.getElementById('assessments-container');
+    const addAssessmentBtn = document.getElementById('add-assessment-btn');
+
+    function renderFormAssessments() {
+      assessmentsContainer.innerHTML = '';
+      assessmentsData.forEach(as => {
+        const card = document.createElement('div');
+        card.className = 'assessment-item-card';
+        card.innerHTML = `
+          <button type="button" class="remove-btn" onclick="removeAssessmentRow(${as.id})">×</button>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>When (Timeline)</label>
+              <input type="text" value="${as.week}" oninput="updateAssessmentField(${as.id}, 'week', this.value)" placeholder="e.g., Week 2">
+            </div>
+            <div class="form-group">
+              <label>Phase Type</label>
+              <select onchange="updateAssessmentField(${as.id}, 'type', this.value)">
+                <option value="Formative Check" ${as.type === 'Formative Check' ? 'selected' : ''}>Formative Check</option>
+                <option value="Summative Milestone" ${as.type === 'Summative Milestone' ? 'selected' : ''}>Summative Milestone</option>
+                <option value="Final Practical" ${as.type === 'Final Practical' ? 'selected' : ''}>Final Practical</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:0.75rem;">
+            <label id="lbl-sub1-${as.id}">Subject A Tasks</label>
+            <input type="text" value="${as.sub1}" oninput="updateAssessmentField(${as.id}, 'sub1', this.value)" placeholder="Assessments / Activities">
+          </div>
+          <div class="form-group">
+            <label id="lbl-sub2-${as.id}">Subject B Tasks</label>
+            <input type="text" value="${as.sub2}" oninput="updateAssessmentField(${as.id}, 'sub2', this.value)" placeholder="Assessments / Activities">
+          </div>
+        `;
+        assessmentsContainer.appendChild(card);
+        updateLabelTexts(as.id);
+      });
+    }
+
+    function updateLabelTexts(id) {
+      const sub1Val = document.getElementById('sub1-name').value;
+      const sub2Val = document.getElementById('sub2-name').value;
+      const lbl1 = document.getElementById(`lbl-sub1-${id}`);
+      const lbl2 = document.getElementById(`lbl-sub2-${id}`);
+      if (lbl1) lbl1.textContent = `${sub1Val} Assessments`;
+      if (lbl2) lbl2.textContent = `${sub2Val} Assessments`;
+    }
+
+    function updateAssessmentField(id, field, value) {
+      const idx = assessmentsData.findIndex(item => item.id === id);
+      if (idx !== -1) {
+        assessmentsData[idx][field] = value;
+        syncAssessmentTable();
+        renderVisualizer();
+      }
+    }
+
+    function removeAssessmentRow(id) {
+      assessmentsData = assessmentsData.filter(item => item.id !== id);
+      renderFormAssessments();
+      syncAssessmentTable();
+      renderVisualizer();
+    }
+
+    addAssessmentBtn.addEventListener('click', () => {
+      const nextId = assessmentsData.length > 0 ? Math.max(...assessmentsData.map(d => d.id)) + 1 : 1;
+      assessmentsData.push({
+        id: nextId,
+        week: `Week ${nextId}`,
+        type: 'Formative Check',
+        sub1: '',
+        sub2: ''
+      });
+      renderFormAssessments();
+      syncAssessmentTable();
+      renderVisualizer();
+    });
+
+    function syncAssessmentTable() {
+      const tableBody = document.querySelector('#preview-timeline-table tbody');
+      if (!tableBody) return;
+      tableBody.innerHTML = '';
+      
+      assessmentsData.forEach(as => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${as.week}</strong></td>
+          <td><span class="badge ${as.type === 'Final Practical' ? 'badge-accent' : as.type === 'Summative Milestone' ? 'badge-primary' : 'badge-secondary'}">${as.type}</span></td>
+          <td>${as.sub1}</td>
+          <td>${as.sub2}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // ========================================================================
+    // TEMPLATE LOADER SYSTEM (With 5 templates)
+    // ========================================================================
+    const templates = {
+      'template-1': {
+        title: "Body Puppet Intro Project",
+        grade: "Primary X (1st Sem)",
+        duration: 4,
+        theme: "Introduction and Body Parts (S.Y. 2025-2026)",
+        sub1: {
+          name: "Science",
+          teacher: "Primary X Science Teacher",
+          obj: "(1) Name at least 8 major external body parts with 100% accuracy. (2) Identify the correct location of body parts by assembling a paper puppet. (3) Describe the primary functions (e.g. We use our eyes to see, legs to walk). (4) Explain how body parts make daily life easier.",
+          prereq: "Basic visual identification of body parts."
+        },
+        sub2: {
+          name: "Language (English & BI)",
+          teacher: "Primary X Language Teacher",
+          obj: "Bahasa: Siswa dapat menyebutkan identitas diri (nama, umur, tanggal lahir, alamat, hobi) secara benar dan lengkap. English: Introduce themselves confidently in front of the class.",
+          prereq: "Basic spelling and sentence writing in English and Bahasa Indonesia."
+        },
+        seq: "Language teachers (English & Bahasa) coordinate self-introduction speech templates during Weeks 1 and 2, which run parallel to the Science body parts naming lectures. In Week 3, students apply these by presenting their puppets in front of the class.",
+        assessments: [
+          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Diagnostic quiz naming body parts (head, arms, legs).', sub2: 'BI: Writing personal identities (name, age, hobi) on notebook.' },
+          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Identify body part locations by assembling paper puppet parts.', sub2: 'English: Introduce name and age in small groups.' },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Describe primary functions of at least five major body parts.', sub2: 'BI: Introduce self in front of class using written scripts.' },
+          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Puppet construction check (Criteria: Naming, describing, effort).', sub2: 'English & BI: Self-introduction speech presenting the puppet as a visual aid.' }
+        ]
+      },
+      'template-2': {
+        title: "Miniature Stage Drama",
+        grade: "Primary X (1st Sem Final)",
+        duration: 4,
+        theme: "Making miniature stage drama using different recycled and used materials",
+        sub1: {
+          name: "Science",
+          teacher: "Primary X Science Teacher",
+          obj: "Properties: Identify and explain properties of different recycled and used materials (e.g. paper, plastic, fabric, wood) for structural design.",
+          prereq: "Basic sorting of objects by simple properties."
+        },
+        sub2: {
+          name: "English, Bahasa & RS",
+          teacher: "Primary X Teachers",
+          obj: "English: Write procedure text of stage construction. RS: Story about Joshua & Caleb / Ruth helps Naomi. BI/PPKn: Meniru gerakan dalam cerita.",
+          prereq: "Active listening of narratives, basic gross-motor coordination."
+        },
+        seq: "RS introduces the narrative scripts. English coordinates instructions/procedures of stage construction. Science guides material checks (flexibility, rigidity) to build a stable theater framework.",
+        assessments: [
+          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Sort collected materials into groups (plastics, metals, papers).', sub2: 'RS: Read and order key events in the story of Joshua and Caleb.' },
+          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Build structural stage foundation, testing for strength.', sub2: 'English: Write out the material list and step 1-3 of building the stage.' },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Fabricate characters and decorative props.', sub2: 'BI/PPKn: Recreate script movements (meniru gerakan dalam cerita).' },
+          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science & Arts: Stage and characters construction check.', sub2: 'English & BI: Deliver the miniature stage drama story performance.' }
+        ]
+      },
+      'template-3': {
+        title: "Water Games Day & Buoyancy",
+        grade: "Primary X (2nd Sem Final)",
+        duration: 4,
+        theme: "Water Games Day: Coordination, rhythm, reading clock, and buoyancy",
+        sub1: {
+          name: "Science",
+          teacher: "Primary X Science Teacher",
+          obj: "1. Predict whether familiar objects float or sink. 2. Collect and record observations using a simple chart. 3. Apply buoyancy to design and construct a simple floating device.",
+          prereq: "Understanding terms heavy vs light, float vs sink."
+        },
+        sub2: {
+          name: "Mathematics",
+          teacher: "Primary X Math Teacher",
+          obj: "Recognize and read analog clock times (o’clock). Write correct time after observing an analog clock. Construct personal o’clock clock product.",
+          prereq: "Recognizing numbers 1-12 on dials."
+        },
+        seq: "Math teaches reading clock (o'clock clock product) in Week 1, which will be tested in PE/Water games. Science covers floating and sinking concepts, building devices in Week 3, leading to tests in Week 4. PE handles obstacle course. Music handles body percussion.",
+        assessments: [
+          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Identify factors affecting floating (weight, material).', sub2: 'Math: Construct own o’clock clock product to support clock reading.' },
+          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Conduct and chart float/sink predictions of 5 common items.', sub2: 'Music & RS: Practice body percussion (claps, taps) to build rhythm.' },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Assemble final buoyancy device prototype using plastic/foam.', sub2: 'PE: Run obstacle course trials to check coordination and balance.' },
+          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science & English: Float/sink experiment and simple report writing.', sub2: 'Math & PE: Analog time reading station challenge / water games obstacle course.' }
+        ]
+      },
+      'template-4': {
+        title: "My Book of Light",
+        grade: "Primary 3 (1st Sem Final)",
+        duration: 4,
+        theme: "My Book of Light: Shadows, creative storytelling, and math coordinates",
+        sub1: {
+          name: "Science",
+          teacher: "Primary 3 Science Teacher",
+          obj: "Investigate how light behaves. Identify sources of light. Explain shadow formations and opaque/transparent properties of materials.",
+          prereq: "Basic sensory definitions of shadows."
+        },
+        sub2: {
+          name: "ELA & Math",
+          teacher: "Primary 3 Core Teachers",
+          obj: "ELA: Draft a creative story book using descriptors, shapes, colors, and body parts. Math: Formulate and solve coordinate grid word problems based on the ELA story.",
+          prereq: "Grid systems coordinates plotting, standard storytelling paragraph structure."
+        },
+        seq: "Science leads source experiments in Week 1. ELA coordinates descriptive writing during Weeks 2-3. Math builds story word problems concurrently. Art/PPKn sculpts clay landmarks for mapping.",
+        assessments: [
+          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Differentiate light sources vs reflection surfaces in lab.', sub2: 'Math: Practice coordinate point identification on school map.' },
+          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Measure shadow lengths at three different times of day.', sub2: 'ELA: Write drafts describing characters using body part adjectives.' },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science & Art: Select paper/clay materials and construct puppet filters.', sub2: 'Math & ELA: Combine story narrative with grid coordinate equations.' },
+          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Final Book of Light puppet shadows inspection.', sub2: 'ELA & Math: Deliver storytelling presentations and solve peer math problems.' }
+        ]
+      },
+      'template-5': {
+        title: "Shopping Center",
+        grade: "Primary 2 (2nd Sem Final)",
+        duration: 4,
+        theme: "Shopping Center: Currency calculations, blueprints, and community jobs",
+        sub1: {
+          name: "Science",
+          teacher: "Primary 2 Science Teacher",
+          obj: "Evaluate knowledge of electrical components. Design a 'New Electrical Appliance' blueprint diagram and construct basic circuits.",
+          prereq: "Identifying common electrical objects."
+        },
+        sub2: {
+          name: "Mathematics",
+          teacher: "Primary 2 Math Teacher",
+          obj: "Money: Calculate coin/bill values. Simulate purchasing raw project materials, calculating cost totals and change.",
+          prereq: "Standard subtraction and addition values up to 1,000."
+        },
+        seq: "Math shifts money operations early to Week 1. Science leads circuit construction blueprints. English, BI, and Chinese map shops, jobs, and shopping roleplay dialogues.",
+        assessments: [
+          { id: 1, week: 'Week 1', type: 'Formative Check', sub1: 'Science: Match circuit symbols to correct components (battery, lamp).', sub2: 'Math: Add and subtract values using currency bills up to 1,000.' },
+          { id: 2, week: 'Week 2', type: 'Formative Check', sub1: 'Science: Develop blueprint circuit diagram of new appliance.', sub2: 'English & BI: Label shop locations and describe community occupations.' },
+          { id: 3, week: 'Week 3', type: 'Summative Milestone', sub1: 'Science: Build electrical prototype with modeling clay details.', sub2: 'Math: Purchase prototype construction goods using project budgets.' },
+          { id: 4, week: 'Week 4', type: 'Final Practical', sub1: 'Science: Pitch completed electrical appliance prototype to businessmen.', sub2: 'Math & CL: Shopping Center roleplay and buying dialogue in Chinese.' }
+        ]
+      }
+    };
+
+    const loadButtons = document.querySelectorAll('.load-template-btn');
+
+    loadButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-template-id');
+        const data = templates[id];
+        if (data) {
+          // Fill text fields
+          document.getElementById('project-title').value = data.title;
+          document.getElementById('grade-level').value = data.grade;
+          document.getElementById('project-duration').value = data.duration;
+          document.getElementById('project-theme').value = data.theme;
+          
+          document.getElementById('sub1-name').value = data.sub1.name;
+          document.getElementById('sub1-teacher').value = data.sub1.teacher;
+          document.getElementById('sub1-obj').value = data.sub1.obj;
+          document.getElementById('sub1-prereq').value = data.sub1.prereq;
+          
+          document.getElementById('sub2-name').value = data.sub2.name;
+          document.getElementById('sub2-teacher').value = data.sub2.teacher;
+          document.getElementById('sub2-obj').value = data.sub2.obj;
+          document.getElementById('sub2-prereq').value = data.sub2.prereq;
+          
+          document.getElementById('sequence-adjustment').value = data.seq;
+
+          // Fill assessments
+          assessmentsData = JSON.parse(JSON.stringify(data.assessments));
+          
+          // Render updates
+          renderFormAssessments();
+          updateLivePreview();
+
+          // Switch tab to planner
+          document.querySelector('[data-tab="planner-tab"]').click();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ========================================================================
+    // TAB 4: ASSESSMENT VISUALIZER RENDERING
+    // ========================================================================
+    const vizContainer = document.getElementById('viz-timeline-container');
+
+    function renderVisualizer() {
+      vizContainer.innerHTML = '';
+      const sub1Val = document.getElementById('sub1-name').value;
+      const sub2Val = document.getElementById('sub2-name').value;
+
+      assessmentsData.forEach(as => {
+        const row = document.createElement('div');
+        row.className = 'viz-week-row';
+        row.innerHTML = `
+          <div class="viz-label">${as.week}</div>
+          
+          <div class="viz-track t1">
+            ${as.type === 'Final Practical' ? '<span class="sync-indicator">Joint Culmination</span>' : as.type === 'Summative Milestone' ? '<span class="sync-indicator" style="background:var(--primary-glow); color:var(--primary);">Co-design Check</span>' : ''}
+            <h4>${sub1Val} Tasks</h4>
+            <p>${as.sub1 || '<em>No assessments entered.</em>'}</p>
+          </div>
+          
+          <div class="viz-track t2">
+            <h4>${sub2Val} Tasks</h4>
+            <p>${as.sub2 || '<em>No assessments entered.</em>'}</p>
+          </div>
+        `;
+        vizContainer.appendChild(row);
+      });
+    }
+
+    // ========================================================================
+    // EXPORT & PRINT HANDLERS
+    // ========================================================================
+    document.getElementById('print-btn').addEventListener('click', () => {
+      window.print();
+    });
+
+    document.getElementById('copy-markdown-btn').addEventListener('click', () => {
+      const title = document.getElementById('project-title').value;
+      const grade = document.getElementById('grade-level').value;
+      const duration = document.getElementById('project-duration').value;
+      const theme = document.getElementById('project-theme').value;
+      const sub1 = document.getElementById('sub1-name').value;
+      const sub2 = document.getElementById('sub2-name').value;
+      const sub1Teacher = document.getElementById('sub1-teacher').value;
+      const sub2Teacher = document.getElementById('sub2-teacher').value;
+      const sub1Obj = document.getElementById('sub1-obj').value;
+      const sub2Obj = document.getElementById('sub2-obj').value;
+      const seq = document.getElementById('sequence-adjustment').value;
+
+      let md = `# Horizontal Alignment File: ${title}\n`;
+      md += `* **Grade Level**: ${grade}\n`;
+      md += `* **Duration**: ${duration} Weeks\n`;
+      md += `* **Theme**: ${theme}\n`;
+      md += `* **Pacing Shift**: ${seq}\n\n`;
+      
+      md += `## Subject Collaboration Details\n`;
+      md += `| Subject | Teacher | Learning Objective | Prerequisites |\n`;
+      md += `|---|---|---|---|\n`;
+      md += `| ${sub1} | ${sub1Teacher} | ${sub1Obj.replace(/\n/g, ' ')} | ${document.getElementById('sub1-prereq').value} |\n`;
+      md += `| ${sub2} | ${sub2Teacher} | ${sub2Obj.replace(/\n/g, ' ')} | ${document.getElementById('sub2-prereq').value} |\n\n`;
+      
+      md += `## Coordinated Timeline\n`;
+      md += `| When | Phase Type | ${sub1} Assessments | ${sub2} Assessments |\n`;
+      md += `|---|---|---|---|\n`;
+      
+      assessmentsData.forEach(as => {
+        md += `| ${as.week} | ${as.type} | ${as.sub1} | ${as.sub2} |\n`;
+      });
+
+      navigator.clipboard.writeText(md).then(() => {
+        alert('Horizontal Alignment Document copied to clipboard in Markdown format!');
+      }).catch(err => {
+        alert('Failed to copy Markdown: ' + err);
+      });
+    });
+
+    // Backups Export JSON
+    document.getElementById('download-json-btn').addEventListener('click', () => {
+      const dataObj = {
+        title: document.getElementById('project-title').value,
+        grade: document.getElementById('grade-level').value,
+        duration: document.getElementById('project-duration').value,
+        theme: document.getElementById('project-theme').value,
+        sub1: {
+          name: document.getElementById('sub1-name').value,
+          teacher: document.getElementById('sub1-teacher').value,
+          obj: document.getElementById('sub1-obj').value,
+          prereq: document.getElementById('sub1-prereq').value
+        },
+        sub2: {
+          name: document.getElementById('sub2-name').value,
+          teacher: document.getElementById('sub2-teacher').value,
+          obj: document.getElementById('sub2-obj').value,
+          prereq: document.getElementById('sub2-prereq').value
+        },
+        seq: document.getElementById('sequence-adjustment').value,
+        assessments: assessmentsData
+      };
+      
+      const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${dataObj.title.toLowerCase().replace(/\s+/g, '_')}_alignment.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // ========================================================================
+    // APP INITIALIZATION
+    // ========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderFormAssessments();
+      updateLivePreview();
+    });
+  </script>
+</body>
+</html>
