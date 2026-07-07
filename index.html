@@ -988,6 +988,10 @@
 
      /* Print Styles overrides */
     @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
       body {
         background: #ffffff !important;
         color: #000000 !important;
@@ -1022,11 +1026,13 @@
       }
       .a4-document {
         box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100% !important;
-        min-height: auto !important;
+        padding: 18mm !important; /* Preserves standard page margins */
+        margin: 0 auto !important;
+        width: 210mm !important; /* Forces standard A4 width */
+        min-height: 297mm !important; /* Forces standard A4 height */
         border: none !important;
+        background: #ffffff !important;
+        box-sizing: border-box !important;
       }
     }
 
